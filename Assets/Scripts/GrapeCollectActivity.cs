@@ -1,28 +1,60 @@
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using UnityEngine.Audio;
 
-[RequireComponent(typeof(AudioListener))]
-public class MicrophoneListener : MonoBehaviour
-{	
+public class GrapeCollectActivity : Activity
+{
 	private readonly int SAMPLE_COUNT = 1000; 
 	private readonly float THRESHOLD = 5.7f;
+
+	//public GameObject grapePrefab, spawnAreaLeft, spawnAreaRight;
 
 	private float[] _samples;
 	private float _sensitivity;
 
-	public AudioSource audioSource;
-	public GameObject grapePrefab, spawnAreaLeft, spawnAreaRight;
+	private AudioSource audioSource;
 	//private CriarSonar sonarController;
+
+	void Awake()
+	{
+		audioSource = GetComponent<AudioSource>();
+		//	sonarController = GetComponent<CriarSonar>();
+	}
+
+	void Start() 
+	{
+		// Intitialize the audio buffer
+		_sensitivity = 10.0f;
+		_samples = new float[SAMPLE_COUNT];
+
+		// Hook event for device change handling
+		AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged;
+
+		// Setup the microphone input stream
+		SetupMicrophoneInput();
+	}
+
+	void Update()
+	{
+		float volume = GetAverageVolume() * _sensitivity;
+		//print(volume);
+		if (volume > THRESHOLD)
+		{
+			ThresholdBeaten();
+		}
+	}
 
 	private void ThresholdBeaten()
 	{
 		/*  if(sonarController.IsAllowed)
-		sonarController.InitVoice();*/
-		if (GameMaster.isCounting == true) {
-			Instantiate (grapePrefab, new Vector3 (Random.Range (spawnAreaLeft.transform.position.x, spawnAreaRight.transform.position.x), 6.08f, 0), Quaternion.identity);
+			sonarController.InitVoice();
+		*/
+		if (GameMaster.isCounting == true)
+		{
+			generatedResource.AddResource(1);
+			//Instantiate (grapePrefab, new Vector3 (Random.Range (spawnAreaLeft.transform.position.x, spawnAreaRight.transform.position.x), 6.08f, 0), Quaternion.identity);
 		}
-		}
+	}
 
 	private float GetAverageVolume()
 	{
@@ -37,13 +69,7 @@ public class MicrophoneListener : MonoBehaviour
 		return average / SAMPLE_COUNT;
 	}
 
-	void Awake()
-	{
-	//	audioSource = GetComponent<AudioSource>();
-	//	sonarController = GetComponent<CriarSonar>();
-	}
-
-	void SetupMicrophoneInput()
+	private void SetupMicrophoneInput()
 	{
 		// We're assuming here that the first recording device is the default
 		string primaryAudioRecordingDevice = Microphone.devices[0];
@@ -53,6 +79,10 @@ public class MicrophoneListener : MonoBehaviour
 		{
 			Debug.Log("No input devices found");
 			return;
+		}
+		else
+		{
+			Debug.Log("Primarey recording device: " + primaryAudioRecordingDevice);
 		}
 
 		// Do the microphone audio setup
@@ -68,19 +98,6 @@ public class MicrophoneListener : MonoBehaviour
 		audioSource.Play();
 	}
 
-	void Start() 
-	{
-		// Intitialize the audio buffer
-		_sensitivity = 10.0f;
-		_samples = new float[SAMPLE_COUNT];
-
-		// Hook event for device change handling
-		AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged; 
-
-		// Setup the microphone input stream
-		SetupMicrophoneInput();
-	}
-
 	void OnAudioConfigurationChanged(bool deviceWasChanged)
 	{ 
 		if (deviceWasChanged) 
@@ -89,15 +106,4 @@ public class MicrophoneListener : MonoBehaviour
 			SetupMicrophoneInput();
 		}
 	}
-
-	void Update()
-	{
-		float volume = GetAverageVolume() * _sensitivity;
-        //print(volume);
-        if (volume > THRESHOLD)
-		{
-			ThresholdBeaten();
-		}
-	}
-
 }

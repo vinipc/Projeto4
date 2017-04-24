@@ -10,22 +10,22 @@ public class Activity : MonoBehaviour
 	[Tooltip("required / generated ratio")]
 	public float requirementToGenerationRatio = 1f;
 
-	public void GenerateResource(float generatedAmount)
+	public virtual void GenerateResource(float generatedAmount)
 	{
 		float requiredAmount = requirementToGenerationRatio * generatedAmount;
 
 		if (requiredResource == null || requiredAmount <= requiredResource.amount)
 		{
 			if (requiredResource != null)
-				requiredResource.ChangeAmount(-requiredAmount);
+				requiredResource.RemoveResource(requiredAmount);
 
-			generatedResource.ChangeAmount(generatedAmount);
+			generatedResource.AddResource(generatedAmount);
 		}
 		else
 		{
 			float maxGenerateable = requiredResource.amount / requirementToGenerationRatio;
-			requiredResource.ChangeAmount(-requiredResource.amount);
-			generatedResource.ChangeAmount(maxGenerateable);
+			requiredResource.RemoveResource(requiredResource.amount);
+			generatedResource.AddResource(maxGenerateable);
 		}
 	}
 }
