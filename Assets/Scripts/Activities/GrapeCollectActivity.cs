@@ -4,27 +4,22 @@ using UnityEngine;
 
 public class GrapeCollectActivity : Activity
 {
-	private readonly int SAMPLE_COUNT = 1000; 
-	private readonly float THRESHOLD = 5.7f;
-
-	//public GameObject grapePrefab, spawnAreaLeft, spawnAreaRight;
+	private readonly int SAMPLE_COUNT = 1024; 
+	private readonly float THRESHOLD = 10f;
 
 	private float[] _samples;
-	private float _sensitivity;
+	public float micSensitivity = 10f;
 
 	private AudioSource audioSource;
-	//private CriarSonar sonarController;
 
 	void Awake()
 	{
 		audioSource = GetComponent<AudioSource>();
-		//	sonarController = GetComponent<CriarSonar>();
 	}
 
 	void Start() 
 	{
 		// Intitialize the audio buffer
-		_sensitivity = 10.0f;
 		_samples = new float[SAMPLE_COUNT];
 
 		// Hook event for device change handling
@@ -36,8 +31,7 @@ public class GrapeCollectActivity : Activity
 
 	void Update()
 	{
-		float volume = GetAverageVolume() * _sensitivity;
-		//print(volume);
+		float volume = GetAverageVolume() * micSensitivity;
 		if (volume > THRESHOLD)
 		{
 			ThresholdBeaten();
@@ -46,13 +40,9 @@ public class GrapeCollectActivity : Activity
 
 	private void ThresholdBeaten()
 	{
-		/*  if(sonarController.IsAllowed)
-			sonarController.InitVoice();
-		*/
 		if (GameMaster.isCounting == true)
 		{
 			generatedResource.AddResource(1);
-			//Instantiate (grapePrefab, new Vector3 (Random.Range (spawnAreaLeft.transform.position.x, spawnAreaRight.transform.position.x), 6.08f, 0), Quaternion.identity);
 		}
 	}
 
