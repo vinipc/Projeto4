@@ -1313,7 +1313,7 @@ MonoBehaviour:
   requiredResource: {fileID: 0}
   generatedResource: {fileID: 1406529072}
   requirementToGenerationRatio: 1
-  micSensitivity: 750
+  micSensitivity: 500
 --- !u!82 &1078644344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requiredResource: {fileID: 1406529072}
   generatedResource: {fileID: 1199830500}
-  requirementToGenerationRatio: 5
+  requirementToGenerationRatio: 3
   resourcePerTap: 1
 --- !u!114 &1199830500
 MonoBehaviour:
@@ -1754,7 +1754,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   requiredResource: {fileID: 1199830500}
   generatedResource: {fileID: 1408268125}
-  requirementToGenerationRatio: 10
+  requirementToGenerationRatio: 5
   resourcePerSpin: 1
 --- !u!1 &1432842363
 GameObject:

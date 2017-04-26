@@ -5,7 +5,7 @@ using UnityEngine;
 public class DummyInputReceiver : MonoBehaviour 
 {
 	public KeyCode input;
-	public float generatedAmount;
+	public int generatedAmount;
 
 	private Activity activity;
 

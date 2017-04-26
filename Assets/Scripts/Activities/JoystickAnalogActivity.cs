@@ -7,7 +7,7 @@ public class JoystickAnalogActivity : Activity
 	private readonly string VERTICAL_INPUT = "JoystickVertical";
 	private readonly string HORIZONTAL_INPUT = "JoystickHorizontal";
 
-	public float resourcePerSpin = 1f;
+	public int resourcePerSpin = 1;
 
 	private enum JoystickPosition { Up, Left, Down, Right, None };
 	private List<JoystickPosition> lastPositions = new List<JoystickPosition>();

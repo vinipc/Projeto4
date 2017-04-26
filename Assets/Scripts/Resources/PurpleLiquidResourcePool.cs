@@ -5,24 +5,24 @@ using UnityEngine;
 public class PurpleLiquidResourcePool : ResourcePool
 {
 	public Transform purpleLiquid;
-	public float resourcePerHeight = 10f;
+	public float resourcePerHeight = 10;
 
-	public override void AddResource(float amount)
+	public override void AddResource(int amount)
 	{
 		base.AddResource(amount);
 		UpdatePurpleLiquidScale();
 	}
 
-	public override void RemoveResource(float amountDelta)
+	public override void RemoveResource(int amount)
 	{
-		base.RemoveResource(amountDelta);
+		base.RemoveResource(amount);
 		UpdatePurpleLiquidScale();
 	}
 
 	private void UpdatePurpleLiquidScale()
 	{
 		Vector3 localScale = purpleLiquid.localScale;
-		localScale.y = amount / resourcePerHeight;
+		localScale.y = (float) resourceAmount / (float) resourcePerHeight;
 		purpleLiquid.localScale = localScale;
 	}
 }

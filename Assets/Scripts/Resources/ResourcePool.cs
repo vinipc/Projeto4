@@ -7,18 +7,23 @@ public class ResourcePool : MonoBehaviour
 {
 	public Text amountDisplay;
 
-	public float amount { get; private set; }
+	public int resourceAmount { get; private set; }
 
-	public virtual void AddResource(float amountDelta)
+	protected virtual void Awake()
 	{
-		amount += amountDelta;
-		amountDisplay.text = amount.ToString();
+		amountDisplay.text = resourceAmount.ToString();
 	}
 
-	public virtual void RemoveResource(float amountDelta)
+	public virtual void AddResource(int amount)
 	{
-		amount -= amountDelta;
-		amount = Mathf.Max(0f, amount);
-		amountDisplay.text = amount.ToString();
+		resourceAmount += amount;
+		amountDisplay.text = resourceAmount.ToString();
+	}
+
+	public virtual void RemoveResource(int amount)
+	{
+		resourceAmount -= amount;
+		resourceAmount = Mathf.Max(0, resourceAmount);
+		amountDisplay.text = resourceAmount.ToString();
 	}
 }

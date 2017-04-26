@@ -11,12 +11,11 @@ public class GrapesResourcePool : ResourcePool
 
 	private List<GameObject> grapes = new List<GameObject>();
 
-	public override void AddResource(float amountDelta)
+	public override void AddResource(int amount)
 	{
-		base.AddResource(amountDelta);
-		int iAmount = (int) amountDelta;
+		base.AddResource(amount);
 
-		for (int i = 0; i < iAmount; i++)
+		for (int i = 0; i < amount; i++)
 		{
 			Vector3 position = spawnPoint.position + Vector3.left * Random.Range(-spawnRadius, spawnRadius);
 			GameObject newGrape = Instantiate<GameObject>(grapePrefab, position, Quaternion.identity, grapesParent);
@@ -24,17 +23,14 @@ public class GrapesResourcePool : ResourcePool
 		}
 	}
 
-	public override void RemoveResource(float amountDelta)
+	public override void RemoveResource(int amount)
 	{
-		int iAmount = (int) amountDelta;
-		iAmount = Mathf.Max(iAmount, (int) amountDelta);
+		base.RemoveResource(amount);
 
-		for (int i = 0; i < iAmount; i++)
+		for (int i = 0; i < amount; i++)
 		{
 			Destroy(grapes[0]);
 			grapes.RemoveAt(0);
 		}
-
-		base.RemoveResource(amountDelta);
 	}
 }

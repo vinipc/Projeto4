@@ -6,7 +6,7 @@ public class DanceMatActivity : Activity
 {
 	private const KeyCode NULL_KEYCODE = KeyCode.F15;
 
-	public float resourcePerTap = 1f;
+	public int resourcePerTap = 1;
 
 	private KeyCode lastPressedKey;
 	private bool leftButtonDown = false;
