@@ -31,10 +31,13 @@ public class GrapeCollectActivity : Activity
 
 	void Update()
 	{
-		float volume = GetAverageVolume() * micSensitivity;
-		if (volume > THRESHOLD)
+		if (GameMaster.isCounting)
 		{
-			ThresholdBeaten();
+			float volume = GetAverageVolume() * micSensitivity;
+			if (volume > THRESHOLD)
+			{
+				ThresholdBeaten();
+			}			
 		}
 	}
 
@@ -88,7 +91,7 @@ public class GrapeCollectActivity : Activity
 		audioSource.Play();
 	}
 
-	void OnAudioConfigurationChanged(bool deviceWasChanged)
+	private void OnAudioConfigurationChanged(bool deviceWasChanged)
 	{ 
 		if (deviceWasChanged) 
 		{

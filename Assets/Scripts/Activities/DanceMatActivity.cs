@@ -16,7 +16,10 @@ public class DanceMatActivity : Activity
 
 	private void Update()
 	{
-		CheckInput();
+		if (GameMaster.isCounting)
+		{
+			CheckInput();			
+		}
 	}
 
 	private void CheckInput()
