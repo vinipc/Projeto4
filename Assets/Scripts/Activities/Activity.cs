@@ -15,18 +15,14 @@ public class Activity : MonoBehaviour
 	{
 		int requiredAmount = (int) requirementToGenerationRatio * generatedAmount;
 
+		// If there is not a required resource OR the current amount is over the required amount,
+		//	then decreases required resource and increased generated one.
 		if (requiredResource == null || requiredAmount <= requiredResource.resourceAmount)
 		{
 			if (requiredResource != null)
 				requiredResource.RemoveResource(requiredAmount);
 
 			generatedResource.AddResource(generatedAmount);
-		}
-		else
-		{
-			int maxGenerateable = (int) (requiredResource.resourceAmount / requirementToGenerationRatio);
-			requiredResource.RemoveResource(requiredResource.resourceAmount);
-			generatedResource.AddResource(maxGenerateable);
 		}
 	}
 }
