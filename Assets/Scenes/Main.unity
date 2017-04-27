@@ -1307,13 +1307,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1078644340}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7df956a56e932c049999de1649bbf320, type: 3}
+  m_Script: {fileID: 11500000, guid: 32de330130975a645956356e7985fe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   requiredResource: {fileID: 0}
   generatedResource: {fileID: 1406529072}
   requirementToGenerationRatio: 1
-  micSensitivity: 500
+  accumulatedVolume: 0
+  volume: 0
+  threshold: 100
+  generatedAmount: 0
 --- !u!82 &1078644344
 AudioSource:
   m_ObjectHideFlags: 0
