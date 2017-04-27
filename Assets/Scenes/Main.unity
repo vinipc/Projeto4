@@ -1313,10 +1313,11 @@ MonoBehaviour:
   requiredResource: {fileID: 0}
   generatedResource: {fileID: 1406529072}
   requirementToGenerationRatio: 1
-  accumulatedVolume: 0
   volume: 0
+  accumulatedVolume: 0
   threshold: 100
-  generatedAmount: 0
+  ambientVolume: 0.6
+  generatedAmount: 1
 --- !u!82 &1078644344
 AudioSource:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GrapesResourcePool : ResourcePool
 {
+	[Header("Resource config:")]
 	public GameObject grapePrefab;
 	public Transform spawnPoint;
 	public Transform grapesParent;
@@ -15,6 +16,7 @@ public class GrapesResourcePool : ResourcePool
 	{
 		base.AddResource(amount);
 
+		// Creates grape objects and adds them to grapes list
 		for (int i = 0; i < amount; i++)
 		{
 			Vector3 position = spawnPoint.position + Vector3.left * Random.Range(-spawnRadius, spawnRadius);
@@ -27,6 +29,7 @@ public class GrapesResourcePool : ResourcePool
 	{
 		base.RemoveResource(amount);
 
+		// Destroys consumed grapes
 		for (int i = 0; i < amount; i++)
 		{
 			Destroy(grapes[0]);

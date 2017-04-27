@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class PurpleLiquidResourcePool : ResourcePool
 {
+	[Header("Resource config:")]
 	public Transform purpleLiquid;
-	public float resourcePerHeight = 10;
+	public float resourcePerHeight = 10f;
 
 	public override void AddResource(int amount)
 	{
@@ -19,6 +20,7 @@ public class PurpleLiquidResourcePool : ResourcePool
 		UpdatePurpleLiquidScale();
 	}
 
+	// Updates purple liquid scale to be proportional to resourceAmount
 	private void UpdatePurpleLiquidScale()
 	{
 		Vector3 localScale = purpleLiquid.localScale;

@@ -6,6 +6,7 @@ public class DanceMatActivity : Activity
 {
 	private const KeyCode NULL_KEYCODE = KeyCode.F15;
 
+	[Header("Activity config:")]
 	public int resourcePerTap = 1;
 
 	private KeyCode lastPressedKey;
@@ -55,11 +56,11 @@ public class DanceMatActivity : Activity
 		if (GetRightButtonDown())
 			return KeyCode.RightArrow;
 
-		foreach(KeyCode vKey in System.Enum.GetValues(typeof(KeyCode)))
+		foreach(KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
 		{
-			if(Input.GetKeyDown(vKey))
+			if(Input.GetKeyDown(key))
 			{
-				return vKey;
+				return key;
 			}
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Parent class that interfaces with ResourcePool to get inputs, consume and generate resources
 public class Activity : MonoBehaviour
 {
 	public ResourcePool requiredResource;
