@@ -20,7 +20,7 @@ public class BottlesResourcePool : ResourcePool
 	// Creates new bottles if enough resource was generated
 	private void CreateNewBottles()
 	{
-		if ((resourceAmount - resourcesPerBottle * bottles.Count) > resourcesPerBottle)
+		if ((resourceAmount - resourcesPerBottle * bottles.Count) >= resourcesPerBottle)
 		{
 			bottles.Add(Instantiate<GameObject>(bottlePrefab, bottlesParent));
 		}		

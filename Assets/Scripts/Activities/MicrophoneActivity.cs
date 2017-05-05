@@ -42,6 +42,17 @@ public class MicrophoneActivity : Activity
 		{
 			CheckInput();
 		}
+
+		if (Input.GetKeyDown(KeyCode.KeypadPlus))
+		{
+			threshold -= 5f;
+			threshold = Mathf.Max(1f, threshold);
+		}
+
+		if (Input.GetKeyDown(KeyCode.KeypadMinus))
+		{
+			threshold += 5f;
+		}
 	}
 
 	private void CheckInput()
