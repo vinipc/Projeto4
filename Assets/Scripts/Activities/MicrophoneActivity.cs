@@ -6,13 +6,13 @@ public class MicrophoneActivity : Activity
 {
 	private readonly int SAMPLE_COUNT = 1024; 
 	public readonly float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
+	public static float threshold = 100f; // How much accumulated volume there must be to generate resource
 
 	[Header("Read only:")]
 	public float volume; // Current volume
 	public float accumulatedVolume = 0f; // Current accumulated volume
 
 	[Header("Activity config:")]
-	public float threshold = 100f; // How much accumulated volume there must be to generate resource
 	public float ambientVolume = 0.6f; // Ambient volume to adjust input volume
 	public int generatedAmount; // How much resource is generated whenever threshold is beaten
 
