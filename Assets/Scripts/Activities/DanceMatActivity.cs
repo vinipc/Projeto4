@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class DanceMatActivity : Activity
 {
-	private const KeyCode NULL_KEYCODE = KeyCode.F15;
+	public static KeyCode NULL_KEYCODE = KeyCode.F15;
+	public static KeyCode UP_KEYCODE, DOWN_KEYCODE, LEFT_KEYCODE, RIGHT_KEYCODE, CROSS_KEYCODE, SQUARE_KEYCODE, TRIANGLE_KEYCODE, CIRCLE_KEYCODE;
 
 	[Header("Activity config:")]
 	public int resourcePerTap = 1;
