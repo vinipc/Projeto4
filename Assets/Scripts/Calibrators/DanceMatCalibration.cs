@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DanceMatCalibration : MonoBehaviour
 {
-	public enum DanceMatButtons { Up, Down, Left, Right, Cross, Square, Triangle, Circle };
-	public Dictionary<DanceMatButtons, DanceMatInputCode> buttonToCode = new Dictionary<DanceMatButtons, DanceMatInputCode>();
-
 	public Text messageDisplay;
 
-	private DanceMatButtons currentCalibratedButton;
+	private DanceMatInput currentCalibratedButton;
 	private DanceMatInputCode pressedCode;
 	private int numberOfButtons;
 
@@ -20,8 +18,9 @@ public class DanceMatCalibration : MonoBehaviour
 	{
 		pressedCode = null;
 		countdown = 3f;
-		currentCalibratedButton = DanceMatButtons.Up;
-		numberOfButtons = System.Enum.GetValues(typeof(DanceMatButtons)).Length;
+		currentCalibratedButton = DanceMatInput.Up;
+		numberOfButtons = System.Enum.GetValues(typeof(DanceMatInput)).Length;
+		DanceMatInputManager.inputToCode.Clear();
 	}
 
 	private void Update()
@@ -56,50 +55,52 @@ public class DanceMatCalibration : MonoBehaviour
 			
 			switch (currentCalibratedButton)
 			{
-			case DanceMatButtons.Up:
+			case DanceMatInput.Up:
 				messageDisplay.text = "Aperte a seta para baixo";
 				break;
-			case DanceMatButtons.Down:
+			case DanceMatInput.Down:
 				messageDisplay.text = "Aperte a seta para esquerda";
 				break;
-			case DanceMatButtons.Left:
+			case DanceMatInput.Left:
 				messageDisplay.text = "Aperte a seta para direita";
 				break;
-			case DanceMatButtons.Right:
+			case DanceMatInput.Right:
 				messageDisplay.text = "Aperte X";
 				break;
-			case DanceMatButtons.Cross:
+			case DanceMatInput.Cross:
 				messageDisplay.text = "Aperte quadrado";
 				break;
-			case DanceMatButtons.Square:
+			case DanceMatInput.Square:
 				messageDisplay.text = "Aperte triângulo";
 				break;
-			case DanceMatButtons.Triangle:
+			case DanceMatInput.Triangle:
 				messageDisplay.text = "Apert círculo";
 				break;
-			case DanceMatButtons.Circle:
+			case DanceMatInput.Circle:
 				messageDisplay.text = "Calibragem completa :)";
 				break;
 			}
 
-			buttonToCode.Add(currentCalibratedButton, pressedCode);
+			DanceMatInputManager.inputToCode.Add(currentCalibratedButton, pressedCode);
 			pressedCode = null;
-			currentCalibratedButton = (DanceMatButtons) ((int) currentCalibratedButton + 1);
+			currentCalibratedButton = (DanceMatInput) ((int) currentCalibratedButton + 1);
 		}
 
+		DanceMatInputManager.isInitialized = true;
 		DebugDancematKeys();
+		SceneManager.LoadScene("Main");
 	}
 
 	private bool ButtonHasBeenRegistered()
 	{
-		foreach(KeyValuePair<DanceMatButtons, DanceMatInputCode> entry in buttonToCode)
+		foreach(KeyValuePair<DanceMatInput, DanceMatInputCode> entry in DanceMatInputManager.inputToCode)
 		{
-			if (pressedCode.type == DanceMatInputCode.InputType.Key && 
-				entry.Value.type == DanceMatInputCode.InputType.Key &&
+			if (pressedCode.type == InputType.Key && 
+				entry.Value.type == InputType.Key &&
 				entry.Value.keycode == pressedCode.keycode)
 				return true;
-			if (pressedCode.type == DanceMatInputCode.InputType.Axis && 
-				entry.Value.type == DanceMatInputCode.InputType.Axis &&
+			if (pressedCode.type == InputType.Axis && 
+				entry.Value.type == InputType.Axis &&
 				entry.Value.axisName == pressedCode.axisName &&
 				entry.Value.axisDirection == pressedCode.axisDirection)
 				return true;
@@ -116,7 +117,7 @@ public class DanceMatCalibration : MonoBehaviour
 		if (currentKeycode != DanceMatInputCode.NULL_KEYCODE)
 		{
 			inputCode = new DanceMatInputCode();
-			inputCode.type = DanceMatInputCode.InputType.Key;
+			inputCode.type = InputType.Key;
 			inputCode.keycode = currentKeycode;
 		}
 		else
@@ -127,14 +128,14 @@ public class DanceMatCalibration : MonoBehaviour
 			if (horizontalInput != 0f)
 			{
 				inputCode = new DanceMatInputCode();
-				inputCode.type = DanceMatInputCode.InputType.Axis;
+				inputCode.type = InputType.Axis;
 				inputCode.axisName = "Horizontal";
 				inputCode.axisDirection = horizontalInput > 0f ? 1 : -1;
 			}
 			else if (verticalInput != 0f)
 			{
 				inputCode = new DanceMatInputCode();
-				inputCode.type = DanceMatInputCode.InputType.Axis;
+				inputCode.type = InputType.Axis;
 				inputCode.axisName = "Vertical";
 				inputCode.axisDirection = verticalInput > 0f ? 1 : -1;
 			}
@@ -153,46 +154,17 @@ public class DanceMatCalibration : MonoBehaviour
 			}
 		}
 
-		return DanceMatActivity.NULL_KEYCODE;
+		return DanceMatInputCode.NULL_KEYCODE;
 	}
 
 	private void DebugDancematKeys()
 	{
 		string message = "";
-		foreach (KeyValuePair<DanceMatButtons, DanceMatInputCode> entry in buttonToCode)
+		foreach (KeyValuePair<DanceMatInput, DanceMatInputCode> entry in DanceMatInputManager.inputToCode)
 		{
 			message = string.Concat(message, entry.Key.ToString(), ": ", entry.Value.ToString(), "\n");
 		}
 
 		Debug.Log(message);
-	}
-}
-
-public class DanceMatInputCode
-{
-	public const KeyCode NULL_KEYCODE = KeyCode.F15;
-
-	public enum InputType { Key, Axis, Undefined };
-	public InputType type;
-	public KeyCode keycode;
-	public string axisName;
-	public int axisDirection;
-
-	public DanceMatInputCode()
-	{
-		type = InputType.Undefined;
-		keycode = NULL_KEYCODE;
-		axisName = string.Empty;
-		axisDirection = 0;
-	}
-
-	public override string ToString ()
-	{
-		if (type == InputType.Key)
-			return keycode.ToString();
-		else if (type == InputType.Axis)
-			return string.Concat(axisName, axisDirection == 1 ? " Positive" : " Negative");
-		else
-			return "Undefined";
 	}
 }
