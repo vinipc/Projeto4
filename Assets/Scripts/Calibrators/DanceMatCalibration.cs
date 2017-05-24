@@ -41,6 +41,10 @@ public class DanceMatCalibration : MonoBehaviour
 			{
 				pressedCode = GetCurrentDanceMatInputCode();
 			}
+			else if (Input.anyKeyDown)
+			{
+				SceneManager.LoadScene("Main");
+			}
 		}
 	}
 
@@ -77,7 +81,7 @@ public class DanceMatCalibration : MonoBehaviour
 				messageDisplay.text = "Apert círculo";
 				break;
 			case DanceMatInput.Circle:
-				messageDisplay.text = "Calibragem completa :)";
+				messageDisplay.text = "Calibragem completa.\nAperta qualquer botão para começar";
 				break;
 			}
 
@@ -87,8 +91,6 @@ public class DanceMatCalibration : MonoBehaviour
 		}
 
 		DanceMatInputManager.isInitialized = true;
-		DebugDancematKeys();
-		SceneManager.LoadScene("Main");
 	}
 
 	private bool ButtonHasBeenRegistered()
