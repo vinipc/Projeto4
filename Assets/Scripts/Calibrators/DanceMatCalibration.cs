@@ -78,10 +78,10 @@ public class DanceMatCalibration : MonoBehaviour
 				messageDisplay.text = "Aperte triângulo";
 				break;
 			case DanceMatInput.Triangle:
-				messageDisplay.text = "Apert círculo";
+				messageDisplay.text = "Aperte círculo";
 				break;
 			case DanceMatInput.Circle:
-				messageDisplay.text = "Calibragem completa.\nAperta qualquer botão para começar";
+				messageDisplay.text = "Calibragem completa.\nAperte qualquer botão para começar";
 				break;
 			}
 

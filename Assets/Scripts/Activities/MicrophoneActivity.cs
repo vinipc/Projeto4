@@ -6,7 +6,7 @@ public class MicrophoneActivity : Activity
 {
 	private readonly int SAMPLE_COUNT = 1024; 
 	public readonly float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
-	public static float threshold = 100f; // How much accumulated volume there must be to generate resource
+	public static float threshold = 1f; // How much accumulated volume there must be to generate resource
 
 	[Header("Read only:")]
 	public float volume; // Current volume
@@ -42,23 +42,17 @@ public class MicrophoneActivity : Activity
 		{
 			CheckInput();
 		}
-
-		if (Input.GetKeyDown(KeyCode.KeypadPlus))
-		{
-			threshold -= 5f;
-			threshold = Mathf.Max(1f, threshold);
-		}
-
-		if (Input.GetKeyDown(KeyCode.KeypadMinus))
-		{
-			threshold += 5f;
-		}
 	}
 
 	private void CheckInput()
 	{
 		volume = GetAverageVolume() * MIC_SENSITIVITY;
+		if (volume > ambientVolume)
+		{
+			GenerateResource(generatedAmount);
+		}
 
+		/*
 		// Factors in ambient volume without letting it go into negative
 		float adjustedVolume = volume - ambientVolume; 
 		adjustedVolume = Mathf.Max(0f, adjustedVolume);
@@ -72,6 +66,7 @@ public class MicrophoneActivity : Activity
 
 			GenerateResource(generatedAmount * timesThresholdBeaten);
 		}
+		*/
 	}
 
 	private float GetAverageVolume()

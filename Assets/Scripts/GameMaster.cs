@@ -19,6 +19,12 @@ public class GameMaster : MonoBehaviour
 
 	private void Awake()
 	{
+		if (Application.isMobilePlatform)
+		{
+			SceneManager.LoadScene("Mobile Button");
+			return;
+		}
+
 		restartMessage.SetActive(false);
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
@@ -27,7 +33,7 @@ public class GameMaster : MonoBehaviour
 
 	private void Start()
 	{
-		if (!DanceMatInputManager.isInitialized)
+		if (!Application.isMobilePlatform && !DanceMatInputManager.isInitialized)
 		{			
 			SceneManager.LoadScene("DanceMat Calibration");
 		}

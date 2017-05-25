@@ -6,7 +6,7 @@ PlayerSettings:
   serializedVersion: 11
   productGUID: 745220e2014ef2a48a723a186180de19
   AndroidProfiler: 0
-  defaultScreenOrientation: 4
+  defaultScreenOrientation: 3
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
@@ -137,7 +137,7 @@ PlayerSettings:
   protectGraphicsMemory: 0
   useHDRDisplay: 0
   applicationIdentifier:
-    Android: com.Company.ProductName
+    Android: com.vinicoleiros.vinicolalouca
     Standalone: unity.DefaultCompany.Projeto4
     Tizen: com.Company.ProductName
     iOS: com.Company.ProductName
