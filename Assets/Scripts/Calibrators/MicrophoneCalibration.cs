@@ -78,9 +78,6 @@ public class MicrophoneCalibration : MonoBehaviour
 
 		volumeHistory[volumeHistory.Length - 1] = volume;
 		samplesDisplay[samplesDisplay.Length - 1].localScale = new Vector3(1f, volume * sampleScaler, 1f);
-		// Factors in ambient volume without letting it go into negative
-		float adjustedVolume = volume - ambientVolume; 
-		adjustedVolume = Mathf.Max(0f, adjustedVolume);
 	}
 
 	private float GetAverageVolume()

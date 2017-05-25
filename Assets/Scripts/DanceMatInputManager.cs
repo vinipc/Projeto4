@@ -53,8 +53,10 @@ public class DanceMatInputManager : Singleton<DanceMatInputManager>
 		{
 			DanceMatInput input = (DanceMatInput) danceMatInputsArray.GetValue(i);
 			getInput.Add(input, false);
-			getInputDown.Add(input, false);			
+			getInputDown.Add(input, false);
 		}
+
+		isInitialized = false;
 	}
 
 	private void Update()

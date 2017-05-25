@@ -25,6 +25,14 @@ public class GameMaster : MonoBehaviour
 		isCounting = true;
 	}
 
+	private void Start()
+	{
+		if (!DanceMatInputManager.isInitialized)
+		{			
+			SceneManager.LoadScene("DanceMat Calibration");
+		}
+	}
+
 	private void Update()
 	{
 		if (isCounting)

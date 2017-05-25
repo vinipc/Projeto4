@@ -21,8 +21,8 @@ public class DanceMatActivity : Activity
 
 	private void CheckInput()
 	{
-		// If no button was pressed, do nothing.
-		if (!DanceMatInputManager.GetAnyInput())
+		// If manager wasn't initialized or no button was pressed, do nothing.
+		if (!DanceMatInputManager.isInitialized || !DanceMatInputManager.GetAnyInput())
 			return;
 		
 		// Gets which button was pressed on current frame
