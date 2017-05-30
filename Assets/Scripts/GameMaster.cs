@@ -52,12 +52,11 @@ public class GameMaster : MonoBehaviour
 				DecreaseTimer();
 			}
 		}
-		else
+
+		if (Input.GetButtonDown("Reset"))
 		{
-			if (Input.GetButtonDown("Reset"))
-			{
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-			}
+			System.GC.Collect();
+			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 	}
 
