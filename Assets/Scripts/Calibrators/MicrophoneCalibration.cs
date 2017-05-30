@@ -1,26 +1,38 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MicrophoneCalibration : MonoBehaviour
 {
 	private readonly int SAMPLE_COUNT = 1024; 
 	public readonly float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
-	public static float threshold = 100f; // How much accumulated volume there must be to generate resource
+	public readonly float AMBIENT_MEASURE_DURATION = 5f;
 
 	[Header("Read only:")]
 	public float volume; // Current volume
-	public float ambientVolume = 0.6f; // Ambient volume to adjust input volume
+
+	[Header("Calibration config:")]
 	public int numberOfDisplaySamples = 128;
 	public RectTransform sampleDisplayPrefab;
 	public float sampleInterval;
 	public float sampleScaler = 1f;
+	public Text messageDisplay;
 
-	private float countdown;
 	private RectTransform[] samplesDisplay;
 	private float[] volumeHistory;
 	private float[] _samples;
 	private AudioSource audioSource;
+
+	private float accumulatedVolume = 0f;
+	private int samplesInAccumulatedVolume = 0;
+	private float accumulatedVolumeCountdown;
+
+	private float maxVolume = Mathf.NegativeInfinity;
+	private float ambientVolume = Mathf.NegativeInfinity;
+	private float clapVolume = 0f;
+
+	private Countdown sampleCountdown, ambientSampleCountdown;
 
 	private void Awake()
 	{
@@ -43,26 +55,20 @@ public class MicrophoneCalibration : MonoBehaviour
 
 		// Setup the microphone input stream
 		SetupMicrophoneInput();
+
+		// Sets up the required countdowns
+		sampleCountdown = Countdown.New(sampleInterval, CheckInput, null, true);
+		ambientSampleCountdown = Countdown.New(AMBIENT_MEASURE_DURATION, CalculatedAmbientVolume, UpdateCountdownDisplay, false, "Ambient sample countdown");
+
+		messageDisplay.text = "Por favor, fique em silêncio por 5 segundos para detecção do volume do ambiente.";
 	}
 
 	private void Update()
 	{
-		countdown -= Time.deltaTime;
-		if (countdown <= 0f)
+		if (Input.anyKeyDown && maxVolume > 0f)
 		{
-			CheckInput();
-			countdown = sampleInterval;
-		}
-
-		if (Input.GetKeyDown(KeyCode.KeypadPlus))
-		{
-			threshold -= 5f;
-			threshold = Mathf.Max(1f, threshold);
-		}
-
-		if (Input.GetKeyDown(KeyCode.KeypadMinus))
-		{
-			threshold += 5f;
+			clapVolume = maxVolume * 0.75f;
+			Debug.Log("Ambient volume: " + ambientVolume + "\nMax volume: " + maxVolume + "\nClap volume: " + clapVolume);
 		}
 	}
 
@@ -78,6 +84,25 @@ public class MicrophoneCalibration : MonoBehaviour
 
 		volumeHistory[volumeHistory.Length - 1] = volume;
 		samplesDisplay[samplesDisplay.Length - 1].localScale = new Vector3(1f, volume * sampleScaler, 1f);
+
+		accumulatedVolume += volume;
+		samplesInAccumulatedVolume++;
+
+		if (volume > maxVolume)
+			maxVolume = volume;
+	}
+
+	private void UpdateCountdownDisplay()
+	{
+		string timeLeft = Mathf.CeilToInt(ambientSampleCountdown.time).ToString("0");
+		messageDisplay.text = string.Concat("Por favor, fique em silêncio por ", timeLeft, " para detecção do volume do ambiente");
+	}
+
+	private void CalculatedAmbientVolume()
+	{
+		ambientVolume = accumulatedVolume / samplesInAccumulatedVolume;
+		messageDisplay.text = "Agora bata palma.";
+		Countdown.New(2f, ()=> messageDisplay.text = "Agora bata palma.\nE então aperte qualquer botão para terminar.");
 	}
 
 	private float GetAverageVolume()

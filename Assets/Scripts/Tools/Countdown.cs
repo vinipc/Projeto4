@@ -14,27 +14,17 @@ public class Countdown : MonoBehaviour
 	private bool isRepeated;
 	private bool isPaused;
 
-	public event Action Callback;
+	private event Action OnCompleteCallback;
+	private event Action OnUpdateCallback;
 
-	/// <summary>
-	/// Creates a new countdown with the specified time, callback and name that destroys itself when finished
-	/// </summary>
-	public static Countdown New(float time, Action callback, string name = "Countdown")
-	{
-		return New(time, callback, false, name);
-	}
-
-	/// <summary>
-	/// Creates a new countdown with the specified time, callback and name.
-	/// </summary>
-	/// <param name="repeat">If set to <c>true</c> repeats indefinitely. Else, destroys itself when finished</param>
-	public static Countdown New(float time, Action callback, bool repeat = false, string name = "Countdown")
+	public static Countdown New(float time, Action onCompleteCallback, Action onUpdateCallback = null, bool repeat = false, string name = "Countdown")
 	{
 		GameObject newGameObject = new GameObject(name, typeof(Countdown));
 		Countdown newCountdown = newGameObject.GetComponent<Countdown>();
 		newCountdown.totalTime = time;
 		newCountdown.time = time;
-		newCountdown.Callback = callback;
+		newCountdown.OnCompleteCallback = onCompleteCallback;
+		newCountdown.OnUpdateCallback = onUpdateCallback;
 		newCountdown.isRepeated = repeat;
 
 		countdowns.Add(newCountdown);
@@ -74,11 +64,15 @@ public class Countdown : MonoBehaviour
 	{
 		if (isPaused)
 			return;
-		
+
+		if (OnUpdateCallback != null)
+			OnUpdateCallback();
+
 		time -= Time.deltaTime;
 		if (time <= 0f)
 		{
-			Callback();
+			if (OnCompleteCallback != null)
+				OnCompleteCallback();
 			if (isRepeated)
 			{
 				time = totalTime;				

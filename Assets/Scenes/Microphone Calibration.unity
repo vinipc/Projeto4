@@ -273,12 +273,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: 0
-  ambientVolume: 0.6
   numberOfDisplaySamples: 256
   sampleDisplayPrefab: {fileID: 224797017989151344, guid: a52eacb11ca20494d874f4ce672d4fe2,
     type: 2}
   sampleInterval: 0.01
   sampleScaler: 0.3
+  messageDisplay: {fileID: 1030917632}
 --- !u!82 &513189158
 AudioSource:
   m_ObjectHideFlags: 0
@@ -415,7 +415,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 2b322870cd3c00741b6ea1c9cb49abe9, type: 3}
     m_FontSize: 98
     m_FontStyle: 0
     m_BestFit: 0
