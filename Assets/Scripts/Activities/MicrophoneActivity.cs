@@ -5,19 +5,26 @@ using UnityEngine;
 public class MicrophoneActivity : Activity
 {
 	private readonly int SAMPLE_COUNT = 1024; 
-	public readonly float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
+	public static float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
 	public static float threshold = 1f; // How much accumulated volume there must be to generate resource
+	public static bool isCalibrated = false;
+	public static float calibratedAmbientVolume = 0f;
+	public static float calibratedClapVolume = 0f;
 
 	[Header("Read only:")]
 	public float volume; // Current volume
-	public float accumulatedVolume = 0f; // Current accumulated volume
+	public float ambientVolume;
+	public float clapVolume;
 
 	[Header("Activity config:")]
-	public float ambientVolume = 0.6f; // Ambient volume to adjust input volume
 	public int generatedAmount; // How much resource is generated whenever threshold is beaten
 
 	private float[] _samples;
 	private AudioSource audioSource;
+
+	private float lastFrameVolume = 0f;
+	private bool isAmbientVolume;
+	private bool detectedClap;
 
 	private void Awake()
 	{
@@ -34,6 +41,12 @@ public class MicrophoneActivity : Activity
 
 		// Setup the microphone input stream
 		SetupMicrophoneInput();
+
+		if (isCalibrated)
+		{
+			ambientVolume = calibratedAmbientVolume;
+			clapVolume = calibratedClapVolume;
+		}
 	}
 
 	private void Update()
@@ -47,26 +60,15 @@ public class MicrophoneActivity : Activity
 	private void CheckInput()
 	{
 		volume = GetAverageVolume() * MIC_SENSITIVITY;
-		if (volume > ambientVolume)
+	
+		detectedClap = lastFrameVolume <= ambientVolume && volume >= clapVolume;
+		if (detectedClap)
 		{
+			Debug.Log("Detected clap");
 			GenerateResource(generatedAmount);
 		}
 
-		/*
-		// Factors in ambient volume without letting it go into negative
-		float adjustedVolume = volume - ambientVolume; 
-		adjustedVolume = Mathf.Max(0f, adjustedVolume);
-
-		accumulatedVolume += adjustedVolume;
-
-		if (accumulatedVolume >= threshold)
-		{
-			int timesThresholdBeaten = (int) (accumulatedVolume / threshold);
-			accumulatedVolume -= timesThresholdBeaten * threshold;
-
-			GenerateResource(generatedAmount * timesThresholdBeaten);
-		}
-		*/
+		lastFrameVolume = volume;
 	}
 
 	private float GetAverageVolume()

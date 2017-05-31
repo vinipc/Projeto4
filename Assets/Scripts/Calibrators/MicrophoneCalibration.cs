@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MicrophoneCalibration : MonoBehaviour
 {
 	private readonly int SAMPLE_COUNT = 1024; 
-	public readonly float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
 	public readonly float AMBIENT_MEASURE_DURATION = 5f;
 
 	[Header("Read only:")]
@@ -68,13 +67,18 @@ public class MicrophoneCalibration : MonoBehaviour
 		if (Input.anyKeyDown && maxVolume > 0f)
 		{
 			clapVolume = maxVolume * 0.75f;
+			ambientVolume += (clapVolume - ambientVolume) * 0.4f;
+			MicrophoneActivity.calibratedClapVolume = clapVolume;
+			MicrophoneActivity.calibratedAmbientVolume = ambientVolume;
+			MicrophoneActivity.isCalibrated = true;
 			Debug.Log("Ambient volume: " + ambientVolume + "\nMax volume: " + maxVolume + "\nClap volume: " + clapVolume);
+			UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
 		}
 	}
 
 	private void CheckInput()
 	{
-		volume = GetAverageVolume() * MIC_SENSITIVITY;
+		volume = GetAverageVolume() * MicrophoneActivity.MIC_SENSITIVITY;
 
 		for (int i = 0; i < volumeHistory.Length - 1; i++)
 		{
@@ -99,7 +103,7 @@ public class MicrophoneCalibration : MonoBehaviour
 	}
 
 	private void CalculatedAmbientVolume()
-	{
+	{		
 		ambientVolume = accumulatedVolume / samplesInAccumulatedVolume;
 		messageDisplay.text = "Agora bata palma.";
 		Countdown.New(2f, ()=> messageDisplay.text = "Agora bata palma.\nE então aperte qualquer botão para terminar.");

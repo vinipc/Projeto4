@@ -17,6 +17,11 @@ public class Countdown : MonoBehaviour
 	private event Action OnCompleteCallback;
 	private event Action OnUpdateCallback;
 
+	public static Countdown New(float time, Action onCompleteCallback, bool repeat, string name = "Countdown")
+	{
+		return New(time, onCompleteCallback, null, repeat, name);
+	}
+
 	public static Countdown New(float time, Action onCompleteCallback, Action onUpdateCallback = null, bool repeat = false, string name = "Countdown")
 	{
 		GameObject newGameObject = new GameObject(name, typeof(Countdown));
@@ -31,7 +36,7 @@ public class Countdown : MonoBehaviour
 
 		if (parent == null)
 		{
-			parent = new GameObject("Countdowns parent").transform;
+			parent = new GameObject("Countdowns parent").transform;	
 		}
 
 		newGameObject.transform.SetParent(parent);
