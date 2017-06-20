@@ -1919,8 +1919,8 @@ MonoBehaviour:
   generatedResource: {fileID: 1408268125}
   requirementToGenerationRatio: 50
   volume: 0
-  accumulatedVolume: 0
   ambientVolume: 20
+  clapVolume: 0
   generatedAmount: 1
 --- !u!1 &1432842363
 GameObject:
