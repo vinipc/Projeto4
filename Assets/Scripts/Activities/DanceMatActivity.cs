@@ -74,6 +74,7 @@ public class DanceMatActivity : Activity
 			}
 			else
 			{
+				requiredResource.RemoveResource((int) (requirementToGenerationRatio * resourcePerTap));
 				Debug.Log("Missed grape :(");
 			}
 		}

@@ -33,10 +33,13 @@ public class GrapesResourcePool : ResourcePool
 		base.RemoveResource(amount);
 
 		// Destroys consumed grapes
-		for (int i = 0; i < amount; i++)
+		if (grapes.Count > amount)
 		{
-			Destroy(grapes[0]);
-			grapes.RemoveAt(0);
+			for (int i = 0; i < amount; i++)
+			{
+				Destroy(grapes[0]);
+				grapes.RemoveAt(0);
+			}			
 		}
 	}
 }
