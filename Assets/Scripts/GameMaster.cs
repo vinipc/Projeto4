@@ -33,9 +33,12 @@ public class GameMaster : MonoBehaviour
 
 	private void Start()
 	{
-		if (!Application.isMobilePlatform && !DanceMatInputManager.isInitialized)
-		{			
-			SceneManager.LoadScene("DanceMat Calibration");
+		if (!Application.isMobilePlatform)
+		{
+			if (!DanceMatInputManager.isInitialized)
+				SceneManager.LoadScene("DanceMat Calibration");
+			else if (!MicrophoneActivity.isCalibrated)
+				SceneManager.LoadScene("Microphone Calibration");
 		}
 	}
 
