@@ -72,11 +72,7 @@ public class GameMaster : MonoBehaviour
 	private void DecreaseTimer()
 	{
 		currentTime -= Time.deltaTime;
-
-		Vector3 newTimerScale = timerGauge.transform.localScale;
-		newTimerScale.x = currentTime / maxTime;
-		timerGauge.transform.localScale = newTimerScale;
-
+		timerGauge.fillAmount = currentTime / maxTime;
 		timerGauge.color = Color.Lerp(timerEmptyColor, timerFullColor, currentTime / maxTime);
 	}
 }
