@@ -4,6 +4,15 @@ using UnityEngine;
 using System;
 using DG.Tweening;
 
+[System.Serializable]
+public struct DanceMatActivityProperties
+{
+	public float resourcesPerTap;
+	public float hitRadius;
+	public float beatsInterval;
+	public float grapesSpeed;
+}
+
 public class DanceMatActivity : MonoBehaviour
 {
 	private float SPAWN_DISTANCE = 5f;
@@ -11,11 +20,6 @@ public class DanceMatActivity : MonoBehaviour
 
 	public Transform grapePrefab;
 	public Transform target;
-	public float hitRadius;
-
-	public float beatsInterval;
-	public float grapesSpeed;
-
 	public SpriteRenderer feedbackPanel;
 
 	private List<Transform> fallingGrapes = new List<Transform>();
@@ -25,6 +29,7 @@ public class DanceMatActivity : MonoBehaviour
 
 	private void Start()
 	{
+		float beatsInterval = ResourcesMaster.instance.danceMatProperties.beatsInterval;
 		beatCountdown = Countdown.New(beatsInterval, SpawnGrape, UpdateGrapesPosition, true);
 	}
 
@@ -35,6 +40,7 @@ public class DanceMatActivity : MonoBehaviour
 			CheckInput();
 		}
 
+		float beatsInterval = ResourcesMaster.instance.danceMatProperties.beatsInterval;
 		beatCountdown.totalTime = beatsInterval;
 	}
 
@@ -42,6 +48,7 @@ public class DanceMatActivity : MonoBehaviour
 	{		
 		for (int i = 0; i < fallingGrapes.Count; i++)
 		{
+			float grapesSpeed = ResourcesMaster.instance.danceMatProperties.grapesSpeed;
 			fallingGrapes[i].transform.position += Vector3.down * grapesSpeed * Time.deltaTime;
 		}
 	}
@@ -66,17 +73,20 @@ public class DanceMatActivity : MonoBehaviour
 		if (pressedButton != lastPressedInput)
 		{
 			Transform closestGrape = GetClosestGrape();
+			float hitRadius = ResourcesMaster.instance.danceMatProperties.hitRadius;
 			if (Mathf.Abs(closestGrape.position.y - target.position.y) < hitRadius)
 			{
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
-				ResourcesMaster.AddResource(generatedResourceName, (float) ResourcesMaster.instance.resourcePerDanceMatTap);
+				float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
+				ResourcesMaster.AddResource(generatedResourceName, resourcePerTap);
 			}
 			else
 			{
 				feedbackPanel.SetAlpha(0f);
 				feedbackPanel.DOFade(0.5f, 0.5f).From();
-				float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * ResourcesMaster.instance.resourcePerDanceMatTap;
+				float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
+				float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap;
 				ResourcesMaster.RemoveRequiredResource(generatedResourceName, usedResources);
 			}
 		}
@@ -115,6 +125,6 @@ public class DanceMatActivity : MonoBehaviour
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.blue;
-		Gizmos.DrawWireSphere(target.position, hitRadius);
+		Gizmos.DrawWireSphere(target.position, ResourcesMaster.instance.danceMatProperties.hitRadius);
 	}
 }

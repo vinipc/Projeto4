@@ -51,9 +51,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c11ca630a2779c64bb9d525a58e2adba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcePerButtonTap: 5
-  resourcePerDanceMatTap: 1
-  resourcePerMicThreshold: 1
   resources:
   - uniqueName: grape
     requiredResourceName: 
@@ -64,4 +61,14 @@ MonoBehaviour:
   - uniqueName: bottle
     requiredResourceName: juice
     requiredToGeneratedRatio: 20
+  resourcePerButtonTap: 5
+  danceMatProperties:
+    resourcesPerTap: 1
+    hitRadius: 0.3
+    beatsInterval: 0.3
+    grapesSpeed: 3
+  resourcePerMicThreshold: 1
+  resourcePerGrape: 1
+  resourcePerJuiceHeight: 1
+  resourcePerBottle: 1
   debug: 

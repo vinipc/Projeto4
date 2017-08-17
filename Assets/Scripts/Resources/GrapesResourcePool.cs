@@ -10,7 +10,7 @@ public class GrapesResourcePool : MonoBehaviour
 	public Transform grapesParent;
 	public float spawnRadius = 1f;
 
-	public float lastDisplayedAmount = 0;
+	public float displayedAmount = 0;
 	public string displayedResource;
 
 	private List<GameObject> grapes = new List<GameObject>();
@@ -18,14 +18,41 @@ public class GrapesResourcePool : MonoBehaviour
 	private void Update()
 	{
 		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);
-		if (currentAmount != lastDisplayedAmount)
+		if (currentAmount != displayedAmount)
 		{
-			if (currentAmount > lastDisplayedAmount)
-				AddResource((int) (currentAmount - lastDisplayedAmount));
-			else
-				RemoveResource((int) (lastDisplayedAmount - currentAmount));
+			displayedAmount = currentAmount;
+			UpdateGrapesQuantity();
+//
+//			if (currentAmount > displayedAmount)
+//				AddResource((int) (currentAmount - displayedAmount));
+//			else
+//				RemoveResource((int) (displayedAmount - currentAmount));
 
-			lastDisplayedAmount = currentAmount;
+			displayedAmount = currentAmount;
+		}
+	}
+
+	private void UpdateGrapesQuantity()
+	{
+		int expectedQuantity = Mathf.FloorToInt(displayedAmount / ResourcesMaster.instance.resourcePerGrape);
+
+		if (grapes.Count > expectedQuantity)
+		{
+			while (grapes.Count > expectedQuantity)
+			{
+				Destroy(grapes[0]);
+				grapes.RemoveAt(0);
+			}
+		}
+		else
+		{
+			while (grapes.Count < expectedQuantity)
+			{
+				Vector3 position = spawnPoint.position;
+				position.x += Random.Range(-spawnRadius, spawnRadius);
+				position.y += Random.Range(-0.5f, 0.5f);
+				grapes.Add(Instantiate<GameObject>(grapePrefab, position, grapePrefab.transform.rotation, grapesParent));
+			}
 		}
 	}
 

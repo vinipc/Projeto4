@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class ResourcesMaster : Singleton<ResourcesMaster>
 {
+	public List<ResourceData> resources;
+
+	[Header("Resource generation variables")]
 	public float resourcePerButtonTap;
-	public float resourcePerDanceMatTap;
+	public DanceMatActivityProperties danceMatProperties;
 	public float resourcePerMicThreshold;
 
-	public List<ResourceData> resources;
+	[Header("Resource display variables")]
+	public float resourcePerGrape;
+	public float resourcePerJuiceHeight;
+	public float resourcePerBottle;
 
 	private static Dictionary<string, float> resourcePools;
 
