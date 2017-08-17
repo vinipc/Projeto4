@@ -18,6 +18,7 @@ public class MicrophoneActivity : Activity
 
 	[Header("Activity config:")]
 	public int generatedAmount; // How much resource is generated whenever threshold is beaten
+	public string generatedResourceName;
 
 	private float[] _samples;
 	private AudioSource audioSource;
@@ -66,6 +67,7 @@ public class MicrophoneActivity : Activity
 		{
 			Debug.Log("Detected clap");
 			GenerateResource(generatedAmount);
+			ResourcesMaster.AddResource(generatedResourceName, generatedAmount);
 		}
 
 		lastFrameVolume = volume;

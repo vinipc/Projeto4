@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 9
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -252,6 +252,48 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 20803171}
+--- !u!1001 &60777512
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &147295365
 GameObject:
   m_ObjectHideFlags: 0
@@ -937,7 +979,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &528409112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1382,6 +1423,7 @@ MonoBehaviour:
   generatedResource: {fileID: 1406529072}
   requirementToGenerationRatio: 0
   generatedAmount: 10
+  generatedResourceName: grapes
 --- !u!82 &1078644344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1548,7 +1590,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &1157605349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1706,14 +1747,15 @@ MonoBehaviour:
   requiredResource: {fileID: 1406529072}
   generatedResource: {fileID: 1199830500}
   requirementToGenerationRatio: 10
+  generatedResourceName: juice
   grapePrefab: {fileID: 4364519743511158, guid: 5f64bb3a5b57e6749a26f7f82ae6a608,
     type: 2}
   target: {fileID: 1156937113}
   hitRadius: 0.45
-  beatsInterval: 0.5
+  beatsInterval: 0.25
   grapesSpeed: 2
   feedbackPanel: {fileID: 2114449626}
-  resourcePerTap: 1
+  resourcePerTap: 5
 --- !u!114 &1199830500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2004,6 +2046,7 @@ MonoBehaviour:
   ambientVolume: 20
   clapVolume: 0
   generatedAmount: 1
+  generatedResourceName: bottle
 --- !u!1 &1432842363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2997,7 +3040,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &2125207622
 GameObject:
   m_ObjectHideFlags: 0

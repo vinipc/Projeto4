@@ -7,6 +7,7 @@ using DG.Tweening;
 public class DanceMatActivity : Activity
 {
 	private float SPAWN_DISTANCE = 5f;
+	public string generatedResourceName;
 
 	public Transform grapePrefab;
 	public Transform target;
@@ -73,12 +74,14 @@ public class DanceMatActivity : Activity
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
 				GenerateResource(resourcePerTap);
+				ResourcesMaster.AddResource(generatedResourceName, (float) resourcePerTap);
 			}
 			else
 			{
 				feedbackPanel.SetAlpha(0f);
 				feedbackPanel.DOFade(0.5f, 0.5f).From();
 				requiredResource.RemoveResource((int) (requirementToGenerationRatio * resourcePerTap));
+				ResourcesMaster.RemoveRequiredResource(generatedResourceName, requirementToGenerationRatio * resourcePerTap);
 			}
 		}
 
