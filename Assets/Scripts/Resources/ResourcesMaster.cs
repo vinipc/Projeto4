@@ -2,17 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct ResourceConfig
-{
-	public string uniqueName;
-	public string requiredResource;
-	[Tooltip("required / generated ratio")]
-	public float requiredToGeneratedRatio;
-}
-
 public class ResourcesMaster : Singleton<ResourcesMaster>
 {
-	public List<ResourceConfig> resources;
+	public List<Resource> resources;
 
 	private static Dictionary<string, float> resourcePools;
 
@@ -23,8 +15,8 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 
 	public static void AddResource(string name, float amount)
 	{
-		ResourceConfig? resource = instance.resources.Find(res => res.uniqueName == name);
-		float requiredAmount = ((ResourceConfig) resource).requiredToGeneratedRatio * amount;
+		Resource resource = instance.resources.Find(res => res.uniqueName == name);
+		float requiredAmount = resource.requiredToGeneratedRatio * amount;
 
 		if (resource == null)
 		{
@@ -32,9 +24,18 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 			return;
 		}
 
-		if (string.IsNullOrEmpty(((ResourceConfig) resource).requiredResource) || requiredAmount <= resourcePools[((ResourceConfig) resource).requiredResource])
-			resourcePools[((ResourceConfig) resource).requiredResource] -= requiredAmount;
+		if (string.IsNullOrEmpty(resource.requiredResource) || requiredAmount <= resourcePools[resource.requiredResource])
+			resourcePools[resource.requiredResource] -= requiredAmount;
 
-		resourcePools[((ResourceConfig) resource).uniqueName] += amount;
+		resourcePools[resource.uniqueName] += amount;
 	}
+}
+
+[System.Serializable]
+public class Resource
+{
+	public string uniqueName;
+	public string requiredResource;
+	[Tooltip("required / generated ratio")]
+	public float requiredToGeneratedRatio;
 }
