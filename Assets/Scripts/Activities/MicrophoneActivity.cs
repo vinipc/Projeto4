@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MicrophoneActivity : Activity
+public class MicrophoneActivity : MonoBehaviour
 {
 	private readonly int SAMPLE_COUNT = 1024; 
 	public static float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
@@ -66,7 +66,6 @@ public class MicrophoneActivity : Activity
 		if (detectedClap)
 		{
 			Debug.Log("Detected clap");
-			GenerateResource(generatedAmount);
 			ResourcesMaster.AddResource(generatedResourceName, generatedAmount);
 		}
 

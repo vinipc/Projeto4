@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using DG.Tweening;
 
-public class DanceMatActivity : Activity
+public class DanceMatActivity : MonoBehaviour
 {
 	private float SPAWN_DISTANCE = 5f;
 	public string generatedResourceName;
@@ -73,15 +73,13 @@ public class DanceMatActivity : Activity
 			{
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
-				GenerateResource(resourcePerTap);
 				ResourcesMaster.AddResource(generatedResourceName, (float) resourcePerTap);
 			}
 			else
 			{
 				feedbackPanel.SetAlpha(0f);
 				feedbackPanel.DOFade(0.5f, 0.5f).From();
-				requiredResource.RemoveResource((int) (requirementToGenerationRatio * resourcePerTap));
-				ResourcesMaster.RemoveRequiredResource(generatedResourceName, requirementToGenerationRatio * resourcePerTap);
+				ResourcesMaster.RemoveRequiredResource(generatedResourceName, ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap);
 			}
 		}
 

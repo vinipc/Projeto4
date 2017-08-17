@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResourcesMaster : Singleton<ResourcesMaster>
 {
-	public List<Resource> resources;
+	public List<ResourceData> resources;
 
 	private static Dictionary<string, float> resourcePools;
 
@@ -20,10 +20,20 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 		}
 	}
 
+	public static ResourceData GetResourceData(string name)
+	{
+		return instance.resources.Find(res => res.uniqueName == name);
+	}
+
+	public static float GetResourceAmount(string name)
+	{
+		return resourcePools[name];
+	}
+
 	public static void AddResource(string name, float amount)
 	{
 		Debug.Log("Adding resource: " + name);
-		Resource resource = instance.resources.Find(res => res.uniqueName == name);
+		ResourceData resource = instance.resources.Find(res => res.uniqueName == name);
 		float requiredAmount = resource.requiredToGeneratedRatio * amount;
 
 		if (string.IsNullOrEmpty(resource.requiredResourceName) || requiredAmount <= resourcePools[resource.requiredResourceName])
@@ -41,13 +51,13 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 	/// </summary>
 	public static void RemoveRequiredResource(string name, float amount)
 	{
-		Resource resource = instance.resources.Find(res => res.uniqueName == name);
+		ResourceData resource = instance.resources.Find(res => res.uniqueName == name);
 		RemoveResource(resource.requiredResourceName, amount);
 	}
 
 	public static void RemoveResource(string name, float amount)
 	{
-		Resource resource = instance.resources.Find(res => res.uniqueName == name);
+		ResourceData resource = instance.resources.Find(res => res.uniqueName == name);
 		resourcePools[resource.uniqueName] = Mathf.Max(0f, resourcePools[resource.uniqueName] - amount);
 		instance.UpdateDebug();
 	}
@@ -63,7 +73,7 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 }
 
 [System.Serializable]
-public class Resource
+public class ResourceData
 {
 	public string uniqueName;
 	public string requiredResourceName;

@@ -252,48 +252,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 20803171}
---- !u!1001 &60777512
-Prefab:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 100100000, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
-  m_IsPrefabParent: 0
 --- !u!1 &147295365
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,7 +1331,6 @@ GameObject:
   - component: {fileID: 1078644344}
   - component: {fileID: 1078644343}
   - component: {fileID: 1078644345}
-  - component: {fileID: 1078644342}
   m_Layer: 0
   m_Name: Button activity
   m_TagString: Untagged
@@ -1395,19 +1352,6 @@ Transform:
   m_Father: {fileID: 1432842364}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1078644342
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1078644340}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc911b8b96949d24b97e8886cf544159, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  input: 113
-  generatedAmount: 20
 --- !u!114 &1078644343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1419,11 +1363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f70ac7d1560a5b4caf949afaab97864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredResource: {fileID: 0}
-  generatedResource: {fileID: 1406529072}
-  requirementToGenerationRatio: 0
   generatedAmount: 10
-  generatedResourceName: grapes
+  generatedResourceName: grape
 --- !u!82 &1078644344
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1744,9 +1685,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec36703b5cc9aec4a9b26b95f8919b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredResource: {fileID: 1406529072}
-  generatedResource: {fileID: 1199830500}
-  requirementToGenerationRatio: 10
   generatedResourceName: juice
   grapePrefab: {fileID: 4364519743511158, guid: 5f64bb3a5b57e6749a26f7f82ae6a608,
     type: 2}
@@ -1767,9 +1705,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f5492e6f11ec64d9b2c9037a06a1ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountDisplay: {fileID: 467791052}
   purpleLiquid: {fileID: 489882083}
   resourcePerHeight: 10
+  displayedResource: juice
 --- !u!1 &1367407073
 GameObject:
   m_ObjectHideFlags: 0
@@ -1893,12 +1831,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 149634efa115a8b4d86e42999f066136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountDisplay: {fileID: 1367407074}
   grapePrefab: {fileID: 1827035761176546, guid: 046a8960f340648488a3d0d1061c1d35,
     type: 2}
   spawnPoint: {fileID: 1073063434}
   grapesParent: {fileID: 528409113}
   spawnRadius: 2
+  lastDisplayedAmount: 0
+  displayedResource: grape
 --- !u!1 &1408268123
 GameObject:
   m_ObjectHideFlags: 0
@@ -1942,11 +1881,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdba61318337f5c4294a0d63d938b9af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountDisplay: {fileID: 728103035}
   bottlePrefab: {fileID: 1611687283461874, guid: 5c3988985da07c24a97fa675a620ae52,
     type: 2}
   bottlesParent: {fileID: 836990333}
   resourcesPerBottle: 1
+  displayedResource: bottle
 --- !u!82 &1408268126
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2039,9 +1978,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32de330130975a645956356e7985fe36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  requiredResource: {fileID: 1199830500}
-  generatedResource: {fileID: 1408268125}
-  requirementToGenerationRatio: 50
   volume: 0
   ambientVolume: 20
   clapVolume: 0
@@ -2391,6 +2327,48 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 9}
   m_EdgeRadius: 0
+--- !u!1001 &1620349161
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4928396140022762, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 77cea9a3f2697fd43be571fba91d12d9, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1686391102
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,29 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PurpleLiquidResourcePool : ResourcePool
+public class PurpleLiquidResourcePool : MonoBehaviour
 {
 	[Header("Resource config:")]
 	public Transform purpleLiquid;
 	public float resourcePerHeight = 10f;
 
-	public override void AddResource(int amount)
-	{
-		base.AddResource(amount);
-		UpdatePurpleLiquidScale();
-	}
+	public string displayedResource;
+	private float lastDisplayedAmount;
 
-	public override void RemoveResource(int amount)
+	private void Update()
 	{
-		base.RemoveResource(amount);
-		UpdatePurpleLiquidScale();
+		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);
+		if (currentAmount != lastDisplayedAmount)
+		{
+			lastDisplayedAmount = currentAmount;
+			UpdatePurpleLiquidScale();
+		}
 	}
 
 	// Updates purple liquid scale to be proportional to resourceAmount
 	private void UpdatePurpleLiquidScale()
 	{
 		Vector3 localScale = purpleLiquid.localScale;
-		localScale.y = (float) resourceAmount / (float) resourcePerHeight;
+		localScale.y = (float) lastDisplayedAmount / (float) resourcePerHeight;
 		purpleLiquid.localScale = localScale;
 	}
 }

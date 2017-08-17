@@ -2,25 +2,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BottlesResourcePool : ResourcePool
+public class BottlesResourcePool : MonoBehaviour
 {
 	[Header("Resource config:")]
 	public GameObject bottlePrefab;
 	public Transform bottlesParent;
 	public int resourcesPerBottle = 10;
 
+	public string displayedResource;
+	private float lastDisplayedAmount;
+
 	private List<GameObject> bottles = new List<GameObject>();
 
-	public override void AddResource(int amount)
+	private void Update()
 	{
-		base.AddResource(amount);
-		CreateNewBottles();
+		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);
+		if (currentAmount != lastDisplayedAmount)
+		{
+			lastDisplayedAmount = currentAmount;
+			CreateNewBottles();
+		}
 	}
 
 	// Creates new bottles if enough resource was generated
 	private void CreateNewBottles()
 	{
-		if ((resourceAmount - resourcesPerBottle * bottles.Count) >= resourcesPerBottle)
+		if ((lastDisplayedAmount - resourcesPerBottle * bottles.Count) >= resourcesPerBottle)
 		{
 			bottles.Add(Instantiate<GameObject>(bottlePrefab, bottlesParent));
 		}		

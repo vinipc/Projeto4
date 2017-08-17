@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrapesResourcePool : ResourcePool
+public class GrapesResourcePool : MonoBehaviour
 {
 	[Header("Resource config:")]
 	public GameObject grapePrefab;
@@ -10,12 +10,27 @@ public class GrapesResourcePool : ResourcePool
 	public Transform grapesParent;
 	public float spawnRadius = 1f;
 
+	public float lastDisplayedAmount = 0;
+	public string displayedResource;
+
 	private List<GameObject> grapes = new List<GameObject>();
 
-	public override void AddResource(int amount)
+	private void Update()
 	{
-		base.AddResource(amount);
+		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);
+		if (currentAmount != lastDisplayedAmount)
+		{
+			if (currentAmount > lastDisplayedAmount)
+				AddResource((int) (currentAmount - lastDisplayedAmount));
+			else
+				RemoveResource((int) (lastDisplayedAmount - currentAmount));
 
+			lastDisplayedAmount = currentAmount;
+		}
+	}
+
+	public void AddResource(int amount)
+	{
 		// Creates grape objects and adds them to grapes list
 		for (int i = 0; i < amount; i++)
 		{
@@ -28,10 +43,8 @@ public class GrapesResourcePool : ResourcePool
 		}
 	}
 
-	public override void RemoveResource(int amount)
+	public void RemoveResource(int amount)
 	{
-		base.RemoveResource(amount);
-
 		// Destroys consumed grapes
 		if (grapes.Count > amount)
 		{

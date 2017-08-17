@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JoystickAnalogActivity : Activity
+public class JoystickAnalogActivity : MonoBehaviour
 {
 	private readonly string VERTICAL_INPUT = "JoystickVertical";
 	private readonly string HORIZONTAL_INPUT = "JoystickHorizontal";
 
 	[Header("Activity config:")]
 	public int resourcePerSpin = 1;
+	public string generatedResource;
 
 	private enum JoystickPosition { Up, Left, Down, Right, None };
 	private List<JoystickPosition> latestDirections = new List<JoystickPosition>(); // Keeps the last 4 joystick directions
@@ -46,7 +47,7 @@ public class JoystickAnalogActivity : Activity
 			// Generates resources whenever player completed a full spin
 			if (CounterClockwiseCheck() || ClockwiseCheck())
 			{
-				GenerateResource(resourcePerSpin);
+				ResourcesMaster.AddResource(generatedResource, resourcePerSpin);
 			}
 		}
 	}

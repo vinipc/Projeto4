@@ -31,7 +31,7 @@ public class MicrophoneCalibration : MonoBehaviour
 	private float ambientVolume = Mathf.NegativeInfinity;
 	private float clapVolume = 0f;
 
-	private Countdown sampleCountdown, ambientSampleCountdown;
+	private Countdown ambientSampleCountdown;
 
 	private void Awake()
 	{
@@ -56,7 +56,7 @@ public class MicrophoneCalibration : MonoBehaviour
 		SetupMicrophoneInput();
 
 		// Sets up the required countdowns
-		sampleCountdown = Countdown.New(sampleInterval, CheckInput, null, true);
+		Countdown.New(sampleInterval, CheckInput, null, true); // Sample countdown
 		ambientSampleCountdown = Countdown.New(AMBIENT_MEASURE_DURATION, CalculatedAmbientVolume, UpdateCountdownDisplay, false, "Ambient sample countdown");
 
 		messageDisplay.text = "Por favor, fique em silêncio por 5 segundos para detecção do volume do ambiente.";

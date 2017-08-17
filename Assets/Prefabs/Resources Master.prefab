@@ -48,15 +48,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 1926091063535908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a20ce26ee0ad12468d45b28a6427caa, type: 3}
+  m_Script: {fileID: 11500000, guid: c11ca630a2779c64bb9d525a58e2adba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resources:
-  - uniqueName: grapes
+  - uniqueName: grape
     requiredResourceName: 
     requiredToGeneratedRatio: 0
   - uniqueName: juice
-    requiredResourceName: grapes
+    requiredResourceName: grape
     requiredToGeneratedRatio: 10
   - uniqueName: bottle
     requiredResourceName: juice
