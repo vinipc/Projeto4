@@ -15,4 +15,11 @@ public static class ExtensionMethods
 		list.RemoveAt(list.Count - 1);
 		return list.Count;
 	}
+
+	public static void SetAlpha(this SpriteRenderer spriteRenderer, float value)
+	{
+		Color newColor = spriteRenderer.color;
+		newColor.a = value;
+		spriteRenderer.color = newColor;
+	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using DG.Tweening;
 
 public class DanceMatActivity : Activity
 {
@@ -13,6 +14,8 @@ public class DanceMatActivity : Activity
 
 	public float beatsInterval;
 	public float grapesSpeed;
+
+	public SpriteRenderer feedbackPanel;
 
 	[Header("Activity config:")]
 	public int resourcePerTap = 1;
@@ -67,15 +70,15 @@ public class DanceMatActivity : Activity
 			Transform closestGrape = GetClosestGrape();
 			if (Mathf.Abs(closestGrape.position.y - target.position.y) < hitRadius)
 			{
-				Debug.Log("Hit grape!");
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
 				GenerateResource(resourcePerTap);
 			}
 			else
 			{
+				feedbackPanel.SetAlpha(0f);
+				feedbackPanel.DOFade(0.5f, 0.5f).From();
 				requiredResource.RemoveResource((int) (requirementToGenerationRatio * resourcePerTap));
-				Debug.Log("Missed grape :(");
 			}
 		}
 

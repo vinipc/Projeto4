@@ -1712,6 +1712,7 @@ MonoBehaviour:
   hitRadius: 0.45
   beatsInterval: 0.5
   grapesSpeed: 2
+  feedbackPanel: {fileID: 2114449626}
   resourcePerTap: 1
 --- !u!114 &1199830500
 MonoBehaviour:
