@@ -43,7 +43,7 @@ public class DanceMatCalibration : MonoBehaviour
 			}
 			else if (Input.anyKeyDown)
 			{
-				SceneManager.LoadScene("Main");
+				SceneManager.LoadScene("CalibrationChecker");
 			}
 		}
 	}

@@ -31,17 +31,6 @@ public class GameMaster : MonoBehaviour
 		isCounting = true;
 	}
 
-	private void Start()
-	{
-		if (!Application.isMobilePlatform)
-		{
-			if (!DanceMatInputManager.isInitialized)
-				SceneManager.LoadScene("DanceMat Calibration");
-			else if (!MicrophoneActivity.isCalibrated)
-				SceneManager.LoadScene("Microphone Calibration");
-		}
-	}
-
 	private void Update()
 	{
 		if (isCounting)

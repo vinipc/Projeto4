@@ -1363,7 +1363,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f70ac7d1560a5b4caf949afaab97864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  generatedAmount: 10
   generatedResourceName: grape
 --- !u!82 &1078644344
 AudioSource:
@@ -1693,7 +1692,6 @@ MonoBehaviour:
   beatsInterval: 0.25
   grapesSpeed: 2
   feedbackPanel: {fileID: 2114449626}
-  resourcePerTap: 5
 --- !u!114 &1199830500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1981,7 +1979,6 @@ MonoBehaviour:
   volume: 0
   ambientVolume: 20
   clapVolume: 0
-  generatedAmount: 1
   generatedResourceName: bottle
 --- !u!1 &1432842363
 GameObject:

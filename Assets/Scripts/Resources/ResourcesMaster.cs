@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class ResourcesMaster : Singleton<ResourcesMaster>
 {
+	public float resourcePerButtonTap;
+	public float resourcePerDanceMatTap;
+	public float resourcePerMicThreshold;
+
 	public List<ResourceData> resources;
 
 	private static Dictionary<string, float> resourcePools;
@@ -32,7 +36,6 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 
 	public static void AddResource(string name, float amount)
 	{
-		Debug.Log("Adding resource: " + name);
 		ResourceData resource = instance.resources.Find(res => res.uniqueName == name);
 		float requiredAmount = resource.requiredToGeneratedRatio * amount;
 

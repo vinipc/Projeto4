@@ -6,14 +6,17 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/CalibrationChecker.unity
+    guid: 5d3508f5b9d262740889a4e793bc1efa
+  - enabled: 1
     path: Assets/Scenes/DanceMat Calibration.unity
     guid: db56fea1579fe83489048bc18c0ed364
+  - enabled: 1
+    path: Assets/Scenes/Microphone Calibration.unity
+    guid: ff2eb6a0c414c9148a2e535eba56fe43
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 4a360933439985f4ebc915ab8d7f3c20
   - enabled: 1
-    path: Assets/Scenes/Microphone Calibration.unity
-    guid: ff2eb6a0c414c9148a2e535eba56fe43
-  - enabled: 0
     path: Assets/Scenes/Mobile Button.unity
     guid: e3b2a08e4c17ec04e8555a43042812cb

@@ -72,7 +72,7 @@ public class MicrophoneCalibration : MonoBehaviour
 			MicrophoneActivity.calibratedAmbientVolume = ambientVolume;
 			MicrophoneActivity.isCalibrated = true;
 			Debug.Log("Ambient volume: " + ambientVolume + "\nMax volume: " + maxVolume + "\nClap volume: " + clapVolume);
-			UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+			UnityEngine.SceneManagement.SceneManager.LoadScene("CalibrationChecker");
 		}
 	}
 

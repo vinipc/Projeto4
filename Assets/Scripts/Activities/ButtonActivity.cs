@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ButtonActivity : MonoBehaviour
 {
-	public int generatedAmount = 1;
 	public string generatedResourceName;
 
 	public void Update()
@@ -17,7 +16,7 @@ public class ButtonActivity : MonoBehaviour
 	{
 		if (GameMaster.isCounting)
 		{
-			ResourcesMaster.AddResource(generatedResourceName, generatedAmount);
+			ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
 		}
 	}
 }

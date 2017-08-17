@@ -51,6 +51,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c11ca630a2779c64bb9d525a58e2adba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourcePerButtonTap: 5
+  resourcePerDanceMatTap: 1
+  resourcePerMicThreshold: 1
   resources:
   - uniqueName: grape
     requiredResourceName: 

@@ -18,9 +18,6 @@ public class DanceMatActivity : MonoBehaviour
 
 	public SpriteRenderer feedbackPanel;
 
-	[Header("Activity config:")]
-	public int resourcePerTap = 1;
-
 	private List<Transform> fallingGrapes = new List<Transform>();
 	private DanceMatInput lastPressedInput;
 	private Array danceMatInputsArray = System.Enum.GetValues(typeof(DanceMatInput));
@@ -73,13 +70,14 @@ public class DanceMatActivity : MonoBehaviour
 			{
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
-				ResourcesMaster.AddResource(generatedResourceName, (float) resourcePerTap);
+				ResourcesMaster.AddResource(generatedResourceName, (float) ResourcesMaster.instance.resourcePerDanceMatTap);
 			}
 			else
 			{
 				feedbackPanel.SetAlpha(0f);
 				feedbackPanel.DOFade(0.5f, 0.5f).From();
-				ResourcesMaster.RemoveRequiredResource(generatedResourceName, ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap);
+				float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * ResourcesMaster.instance.resourcePerDanceMatTap;
+				ResourcesMaster.RemoveRequiredResource(generatedResourceName, usedResources);
 			}
 		}
 

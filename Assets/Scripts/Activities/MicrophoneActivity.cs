@@ -17,7 +17,6 @@ public class MicrophoneActivity : MonoBehaviour
 	public float clapVolume;
 
 	[Header("Activity config:")]
-	public int generatedAmount; // How much resource is generated whenever threshold is beaten
 	public string generatedResourceName;
 
 	private float[] _samples;
@@ -65,8 +64,7 @@ public class MicrophoneActivity : MonoBehaviour
 		detectedClap = lastFrameVolume <= ambientVolume && volume >= clapVolume;
 		if (detectedClap)
 		{
-			Debug.Log("Detected clap");
-			ResourcesMaster.AddResource(generatedResourceName, generatedAmount);
+			ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerMicThreshold);
 		}
 
 		lastFrameVolume = volume;
