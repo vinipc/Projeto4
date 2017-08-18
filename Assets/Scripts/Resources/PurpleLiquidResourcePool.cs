@@ -6,6 +6,7 @@ public class PurpleLiquidResourcePool : MonoBehaviour
 {
 	[Header("Resource config:")]
 	public Transform purpleLiquid;
+	public Transform lightPurpleSquare;
 	public float resourcePerHeight = 10f;
 
 	public string displayedResource;
