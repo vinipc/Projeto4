@@ -15,6 +15,9 @@ public class GameMaster : MonoBehaviour
 	public Color timerFullColor = Color.green; // Timer color when it's full
 	public Color timerEmptyColor = Color.red; // Timer color when it's empty
 
+	public Transform activitiesParent;
+	public GameObject[] activitiesPrefabs;
+
 	private float currentTime;
 
 	private void Awake()
@@ -29,6 +32,11 @@ public class GameMaster : MonoBehaviour
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
 		isCounting = true;
+
+		for (int i = 0; i < activitiesPrefabs.Length; i++)
+		{
+			Instantiate<GameObject>(activitiesPrefabs[i], activitiesParent);
+		}
 	}
 
 	private void Update()
