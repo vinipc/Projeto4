@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ButtonActivity : MonoBehaviour
+public class ButtonActivity : Activity
 {
-	public string generatedResourceName;
-
 	public void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.Q))

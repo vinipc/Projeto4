@@ -16,27 +16,30 @@ public class GameMaster : MonoBehaviour
 	public Color timerEmptyColor = Color.red; // Timer color when it's empty
 
 	public Transform activitiesParent;
-	public GameObject[] activitiesPrefabs;
+	public Activity[] activitiesPrefabs;
+
+	public GameObject[] tutorials;
 
 	private float currentTime;
+	private Activity[] activities;
 
 	private void Awake()
 	{
-		if (Application.isMobilePlatform)
-		{
-			SceneManager.LoadScene("Mobile Button");
-			return;
-		}
-
 		restartMessage.SetActive(false);
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
 		isCounting = true;
 
+		activities = new Activity[activitiesPrefabs.Length];
 		for (int i = 0; i < activitiesPrefabs.Length; i++)
 		{
-			Instantiate<GameObject>(activitiesPrefabs[i], activitiesParent);
+			activities[i] = Instantiate<Activity>(activitiesPrefabs[i], activitiesParent);
+			activities[i].gameObject.SetActive(false);
+			tutorials[i].SetActive(false);
 		}
+
+		tutorials[0].SetActive(true);
+		activities[0].gameObject.SetActive(true);
 	}
 
 	private void Update()
@@ -44,13 +47,21 @@ public class GameMaster : MonoBehaviour
 		if (isCounting)
 		{
 			if (currentTime < 0f)
-			{
 				GameOver();
-			}
 			else
-			{
 				DecreaseTimer();
-			}
+		}
+
+		if (ResourcesMaster.GetResourceAmount(activities[0].generatedResourceName) >= 50f && !activities[1].gameObject.activeSelf)
+		{
+			activities[1].gameObject.SetActive(true);
+			tutorials[1].SetActive(true);
+		}
+
+		if (ResourcesMaster.GetResourceAmount(activities[1].generatedResourceName) >= 10f && !activities[2].gameObject.activeSelf)
+		{
+			activities[2].gameObject.SetActive(true);
+			tutorials[2].SetActive(true);
 		}
 
 		if (Input.GetButtonDown("Reset"))

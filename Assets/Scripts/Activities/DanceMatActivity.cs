@@ -13,10 +13,9 @@ public struct DanceMatActivityProperties
 	public float grapesSpeed;
 }
 
-public class DanceMatActivity : MonoBehaviour
+public class DanceMatActivity : Activity
 {
 	private float SPAWN_DISTANCE = 5f;
-	public string generatedResourceName;
 
 	public Transform grapePrefab;
 	public Transform target;

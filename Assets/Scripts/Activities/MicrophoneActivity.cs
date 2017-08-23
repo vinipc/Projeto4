@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MicrophoneActivity : MonoBehaviour
+public class MicrophoneActivity : Activity
 {
 	private readonly int SAMPLE_COUNT = 1024; 
 	public static float MIC_SENSITIVITY = 100f; // Multiplies volume into more intelligible values
@@ -15,9 +15,6 @@ public class MicrophoneActivity : MonoBehaviour
 	public float volume; // Current volume
 	public float ambientVolume;
 	public float clapVolume;
-
-	[Header("Activity config:")]
-	public string generatedResourceName;
 
 	private float[] _samples;
 	private AudioSource audioSource;

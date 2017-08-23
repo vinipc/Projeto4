@@ -1066,9 +1066,13 @@ MonoBehaviour:
   timerEmptyColor: {r: 1, g: 0, b: 0, a: 1}
   activitiesParent: {fileID: 1432842364}
   activitiesPrefabs:
-  - {fileID: 1049759114703922, guid: f49458edd97dc034291dc1d0065c0c13, type: 2}
-  - {fileID: 1238973340918076, guid: 2e69ced8b2b93ac4587acbe66354fb09, type: 2}
-  - {fileID: 1894130396167412, guid: 19bafba4de211fe429c1ce67ea3ab2a4, type: 2}
+  - {fileID: 114091768690946378, guid: f49458edd97dc034291dc1d0065c0c13, type: 2}
+  - {fileID: 114359191844885868, guid: 2e69ced8b2b93ac4587acbe66354fb09, type: 2}
+  - {fileID: 114959923221211338, guid: 19bafba4de211fe429c1ce67ea3ab2a4, type: 2}
+  tutorials:
+  - {fileID: 1443375671}
+  - {fileID: 1998576688}
+  - {fileID: 131173987}
 --- !u!1 &836990332
 GameObject:
   m_ObjectHideFlags: 0
