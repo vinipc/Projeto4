@@ -5,6 +5,7 @@ using System;
 
 public static class ExtensionMethods
 {
+	#region List
 	public static T GetLast<T>(this List<T> list)
 	{
 		return list[list.Count - 1];
@@ -15,11 +16,22 @@ public static class ExtensionMethods
 		list.RemoveAt(list.Count - 1);
 		return list.Count;
 	}
+	#endregion
 
+	#region Built-in Array
+	public static T GetRandom<T>(this T[] array)
+	{
+		return array[UnityEngine.Random.Range(0, array.Length)];
+	}
+	#endregion
+
+	#region SpriteRenderer
 	public static void SetAlpha(this SpriteRenderer spriteRenderer, float value)
 	{
 		Color newColor = spriteRenderer.color;
 		newColor.a = value;
 		spriteRenderer.color = newColor;
 	}
+	#endregion
+
 }
