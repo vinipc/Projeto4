@@ -6,7 +6,6 @@ public class PurpleLiquidResourcePool : MonoBehaviour
 {
 	[Header("Resource config:")]
 	public Transform purpleLiquid;
-	public float resourcePerHeight = 10f;
 
 	public string displayedResource;
 	private float lastDisplayedAmount;
@@ -24,6 +23,7 @@ public class PurpleLiquidResourcePool : MonoBehaviour
 	// Updates purple liquid scale to be proportional to resourceAmount
 	private void UpdatePurpleLiquidScale()
 	{
+		float resourcePerHeight = ResourcesMaster.instance.resourcePerJuiceHeight;
 		Vector3 localScale = purpleLiquid.localScale;
 		localScale.y = (float) lastDisplayedAmount / (float) resourcePerHeight;
 		purpleLiquid.localScale = localScale;

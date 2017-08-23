@@ -57,11 +57,11 @@ MonoBehaviour:
     requiredToGeneratedRatio: 0
   - uniqueName: juice
     requiredResourceName: grape
-    requiredToGeneratedRatio: 10
+    requiredToGeneratedRatio: 20
   - uniqueName: bottle
     requiredResourceName: juice
-    requiredToGeneratedRatio: 20
-  resourcePerButtonTap: 10
+    requiredToGeneratedRatio: 10
+  resourcePerButtonTap: 5
   danceMatProperties:
     resourcesPerTap: 1
     hitRadius: 0.3
@@ -69,6 +69,6 @@ MonoBehaviour:
     grapesSpeed: 2
   resourcePerMicThreshold: 1
   resourcePerGrape: 1
-  resourcePerJuiceHeight: 1
+  resourcePerJuiceHeight: 5
   resourcePerBottle: 1
   debug: 

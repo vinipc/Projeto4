@@ -7,7 +7,6 @@ public class BottlesResourcePool : MonoBehaviour
 	[Header("Resource config:")]
 	public GameObject bottlePrefab;
 	public Transform bottlesParent;
-	public int resourcesPerBottle = 10;
 
 	public string displayedResource;
 	private float lastDisplayedAmount;
@@ -32,6 +31,7 @@ public class BottlesResourcePool : MonoBehaviour
 	// Creates new bottles if enough resource was generated
 	private void CreateNewBottles()
 	{
+		float resourcesPerBottle = ResourcesMaster.instance.resourcePerBottle;
 		if ((lastDisplayedAmount - resourcesPerBottle * bottles.Count) >= resourcesPerBottle)
 		{
 			bottles.Add(Instantiate<GameObject>(bottlePrefab, bottlesParent));

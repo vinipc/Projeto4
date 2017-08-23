@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class MicrophoneCalibration : MonoBehaviour
 {
 	private readonly int SAMPLE_COUNT = 1024; 
-	public readonly float AMBIENT_MEASURE_DURATION = 1f;
+	public readonly float AMBIENT_MEASURE_DURATION = 5f;
 
 	[Header("Read only:")]
 	public float volume; // Current volume
