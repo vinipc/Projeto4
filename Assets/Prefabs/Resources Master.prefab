@@ -64,11 +64,11 @@ MonoBehaviour:
   resourcePerButtonTap: 5
   danceMatProperties:
     resourcesPerTap: 1
-    hitRadius: 0.3
+    hitRadius: 0.2
     beatsInterval: 0.4
     grapesSpeed: 2
   resourcePerMicThreshold: 1
-  resourcePerGrape: 1
+  resourcePerGrape: 3
   resourcePerJuiceHeight: 5
   resourcePerBottle: 1
   debug: 

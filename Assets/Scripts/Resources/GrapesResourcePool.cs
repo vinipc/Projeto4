@@ -7,12 +7,10 @@ public class GrapesResourcePool : MonoBehaviour
 	[Header("Resource config:")]
 	public GameObject grapePrefab;
 	public Transform spawnPoint;
-	public Transform grapesParent;
 	public float spawnRadius = 1f;
-
-	public float displayedAmount = 0;
 	public string displayedResource;
 
+	private float displayedAmount = 0;
 	private List<GameObject> grapes = new List<GameObject>();
 
 	private void Update()
@@ -22,12 +20,6 @@ public class GrapesResourcePool : MonoBehaviour
 		{
 			displayedAmount = currentAmount;
 			UpdateGrapesQuantity();
-//
-//			if (currentAmount > displayedAmount)
-//				AddResource((int) (currentAmount - displayedAmount));
-//			else
-//				RemoveResource((int) (displayedAmount - currentAmount));
-
 			displayedAmount = currentAmount;
 		}
 	}
@@ -35,7 +27,6 @@ public class GrapesResourcePool : MonoBehaviour
 	private void UpdateGrapesQuantity()
 	{
 		int expectedQuantity = Mathf.FloorToInt(displayedAmount / ResourcesMaster.instance.resourcePerGrape);
-
 		if (grapes.Count > expectedQuantity)
 		{
 			while (grapes.Count > expectedQuantity)
@@ -51,22 +42,8 @@ public class GrapesResourcePool : MonoBehaviour
 				Vector3 position = spawnPoint.position;
 				position.x += Random.Range(-spawnRadius, spawnRadius);
 				position.y += Random.Range(-0.5f, 0.5f);
-				grapes.Add(Instantiate<GameObject>(grapePrefab, position, grapePrefab.transform.rotation, grapesParent));
+				grapes.Add(Instantiate<GameObject>(grapePrefab, position, grapePrefab.transform.rotation, spawnPoint));
 			}
-		}
-	}
-
-	public void AddResource(int amount)
-	{
-		// Creates grape objects and adds them to grapes list
-		for (int i = 0; i < amount; i++)
-		{
-			Vector3 position = spawnPoint.position;
-			position.x += Random.Range(-spawnRadius, spawnRadius);
-			position.y += Random.Range(-0.5f, 0.5f);
-
-			GameObject newGrape = Instantiate<GameObject>(grapePrefab, position, Quaternion.identity, grapesParent);
-			grapes.Add(newGrape);
 		}
 	}
 
@@ -81,5 +58,11 @@ public class GrapesResourcePool : MonoBehaviour
 				grapes.RemoveAt(0);
 			}			
 		}
+	}
+
+	private void OnDrawGizmosSelected()
+	{
+		Gizmos.color = Color.magenta;
+		Gizmos.DrawWireCube(spawnPoint.position, new Vector3(spawnRadius * 2f, 0.5f, 0f));
 	}
 }

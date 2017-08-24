@@ -13,11 +13,6 @@ public class BottlesResourcePool : MonoBehaviour
 
 	private List<GameObject> bottles = new List<GameObject>();
 
-	private void Awake()
-	{
-		bottlesParent = GameObject.Find("Bottle pile").transform;
-	}
-
 	private void Update()
 	{
 		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);

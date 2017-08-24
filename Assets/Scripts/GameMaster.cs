@@ -18,8 +18,6 @@ public class GameMaster : MonoBehaviour
 	public Transform activitiesParent;
 	public Activity[] activitiesPrefabs;
 
-	public GameObject[] tutorials;
-
 	private float currentTime;
 	private Activity[] activities;
 
@@ -35,10 +33,8 @@ public class GameMaster : MonoBehaviour
 		{
 			activities[i] = Instantiate<Activity>(activitiesPrefabs[i], activitiesParent);
 			activities[i].gameObject.SetActive(false);
-			tutorials[i].SetActive(false);
 		}
 
-		tutorials[0].SetActive(true);
 		activities[0].gameObject.SetActive(true);
 	}
 
@@ -55,13 +51,11 @@ public class GameMaster : MonoBehaviour
 		if (ResourcesMaster.GetResourceAmount(activities[0].generatedResourceName) >= 50f && !activities[1].gameObject.activeSelf)
 		{
 			activities[1].gameObject.SetActive(true);
-			tutorials[1].SetActive(true);
 		}
 
 		if (ResourcesMaster.GetResourceAmount(activities[1].generatedResourceName) >= 10f && !activities[2].gameObject.activeSelf)
 		{
 			activities[2].gameObject.SetActive(true);
-			tutorials[2].SetActive(true);
 		}
 
 		if (Input.GetButtonDown("Reset"))
