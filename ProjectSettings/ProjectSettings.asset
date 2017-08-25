@@ -588,11 +588,14 @@ PlayerSettings:
     daydream:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
-  cloudServicesEnabled: {}
+  cloudServicesEnabled:
+    Build: 1
+    Collab: 1
+    UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: 
-  projectName: 
-  organizationId: 
+  cloudProjectId: 62221f37-0462-43cc-9b9c-16ee8119b30d
+  projectName: Projeto4
+  organizationId: vinicola-louca
   cloudEnabled: 0
   enableNewInputSystem: 0
