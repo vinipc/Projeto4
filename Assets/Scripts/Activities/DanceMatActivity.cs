@@ -17,6 +17,7 @@ public class DanceMatActivity : Activity
 {
 	private float SPAWN_DISTANCE = 5f;
 
+	public Transform spawnPoint;
 	public Transform grapePrefab;
 	public Transform target;
 	public SpriteRenderer feedbackPanel;
@@ -48,13 +49,14 @@ public class DanceMatActivity : Activity
 		for (int i = 0; i < fallingGrapes.Count; i++)
 		{
 			float grapesSpeed = ResourcesMaster.instance.danceMatProperties.grapesSpeed;
-			fallingGrapes[i].transform.position += Vector3.down * grapesSpeed * Time.deltaTime;
+			fallingGrapes[i].transform.position += (target.position - spawnPoint.position).normalized * grapesSpeed * Time.deltaTime;
 		}
 	}
 
 	private void SpawnGrape()
 	{
-		Transform newGrape = Instantiate<Transform>(grapePrefab, target.position + Vector3.up * SPAWN_DISTANCE, Quaternion.identity, transform);
+		Transform newGrape = Instantiate<Transform>(grapePrefab, spawnPoint.position, Quaternion.identity);
+		newGrape.SetParent(spawnPoint, true);
 		fallingGrapes.Add(newGrape);
 	}
 
@@ -73,7 +75,7 @@ public class DanceMatActivity : Activity
 		{
 			Transform closestGrape = GetClosestGrape();
 			float hitRadius = ResourcesMaster.instance.danceMatProperties.hitRadius;
-			if (Mathf.Abs(closestGrape.position.y - target.position.y) < hitRadius)
+			if ((closestGrape.position - target.position).sqrMagnitude < hitRadius * hitRadius)
 			{
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
@@ -112,7 +114,7 @@ public class DanceMatActivity : Activity
 		Transform closestGrape = fallingGrapes[0];
 		for (int i = 0; i < fallingGrapes.Count; i++)
 		{
-			if (Mathf.Abs(fallingGrapes[i].position.y - target.position.y) < Mathf.Abs(closestGrape.position.y - target.position.y))
+			if ((fallingGrapes[i].position - target.position).sqrMagnitude < (closestGrape.position - target.position).sqrMagnitude)
 			{
 				closestGrape = fallingGrapes[i];
 			}

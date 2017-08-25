@@ -42,7 +42,10 @@ public class GrapesResourcePool : MonoBehaviour
 				Vector3 position = spawnPoint.position;
 				position.x += Random.Range(-spawnRadius, spawnRadius);
 				position.y += Random.Range(-0.5f, 0.5f);
-				grapes.Add(Instantiate<GameObject>(grapePrefab, position, grapePrefab.transform.rotation, spawnPoint));
+				GameObject newGrape = Instantiate<GameObject>(grapePrefab, position, Quaternion.identity);
+				newGrape.transform.SetParent(spawnPoint, true);
+				newGrape.transform.localScale *= Random.Range(0.9f, 1.1f);
+				grapes.Add(newGrape);
 			}
 		}
 	}
