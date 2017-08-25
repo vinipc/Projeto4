@@ -23,8 +23,9 @@ public class MicrophoneActivity : Activity
 	private bool isAmbientVolume;
 	private bool detectedClap;
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		audioSource = GetComponent<AudioSource>();
 	}
 

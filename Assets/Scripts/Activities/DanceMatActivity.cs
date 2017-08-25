@@ -15,12 +15,11 @@ public struct DanceMatActivityProperties
 
 public class DanceMatActivity : Activity
 {
-	private float SPAWN_DISTANCE = 5f;
-
 	public Transform spawnPoint;
 	public Transform grapePrefab;
 	public Transform target;
 	public SpriteRenderer feedbackPanel;
+	public Collider2D grapesKiller;
 
 	private List<Transform> fallingGrapes = new List<Transform>();
 	private DanceMatInput lastPressedInput;
@@ -45,16 +44,31 @@ public class DanceMatActivity : Activity
 	}
 
 	private void UpdateGrapesPosition()
-	{		
+	{
+		List<GameObject> flaggedGrapes = new List<GameObject>();
 		for (int i = 0; i < fallingGrapes.Count; i++)
 		{
 			float grapesSpeed = ResourcesMaster.instance.danceMatProperties.grapesSpeed;
 			fallingGrapes[i].transform.position += (target.position - spawnPoint.position).normalized * grapesSpeed * Time.deltaTime;
+			if (grapesKiller.bounds.Contains(fallingGrapes[i].transform.position))
+			{
+				flaggedGrapes.Add(fallingGrapes[i].gameObject);
+			}
+		}
+
+		for (int i = 0; i < flaggedGrapes.Count; i++)
+		{
+			fallingGrapes.Remove(flaggedGrapes[i].transform);
+			Destroy(flaggedGrapes[i]);
 		}
 	}
 
 	private void SpawnGrape()
-	{
+	{		
+		float requiredAmount = ResourcesMaster.instance.danceMatProperties.resourcesPerTap * generatedResource.requiredToGeneratedRatio;
+		if (ResourcesMaster.GetResourceAmount(requiredResource.uniqueName) < requiredAmount)
+			return;
+
 		Transform newGrape = Instantiate<Transform>(grapePrefab, spawnPoint.position, Quaternion.identity);
 		newGrape.SetParent(spawnPoint, true);
 		fallingGrapes.Add(newGrape);
