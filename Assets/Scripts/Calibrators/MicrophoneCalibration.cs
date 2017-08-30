@@ -7,6 +7,7 @@ public class MicrophoneCalibration : MonoBehaviour
 {
 	private readonly int SAMPLE_COUNT = 1024; 
 	public readonly float AMBIENT_MEASURE_DURATION = 5f;
+	public readonly float RELATIVE_CLAP_VOLUME = 0.5f; // How much of the max clap volume will be considered for a clap
 
 	[Header("Read only:")]
 	public float volume; // Current volume
@@ -66,7 +67,7 @@ public class MicrophoneCalibration : MonoBehaviour
 	{
 		if (Input.anyKeyDown && maxVolume > 0f)
 		{
-			clapVolume = maxVolume * 0.75f;
+			clapVolume = maxVolume * RELATIVE_CLAP_VOLUME;
 			ambientVolume += (clapVolume - ambientVolume) * 0.4f;
 			MicrophoneActivity.calibratedClapVolume = clapVolume;
 			MicrophoneActivity.calibratedAmbientVolume = ambientVolume;
