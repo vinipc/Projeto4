@@ -274,7 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   volume: 0
   numberOfDisplaySamples: 256
-  sampleDisplayPrefab: {fileID: 224797017989151344, guid: a52eacb11ca20494d874f4ce672d4fe2,
+  sampleDisplayPrefab: {fileID: 224995907103710184, guid: a52eacb11ca20494d874f4ce672d4fe2,
     type: 2}
   sampleInterval: 0.01
   sampleScaler: 0.3

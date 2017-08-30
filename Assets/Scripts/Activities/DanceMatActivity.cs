@@ -139,7 +139,10 @@ public class DanceMatActivity : Activity
 
 	private void OnDrawGizmosSelected()
 	{
-		Gizmos.color = Color.blue;
-		Gizmos.DrawWireSphere(target.position, ResourcesMaster.instance.danceMatProperties.hitRadius);
+		if (ResourcesMaster.instance != null)
+		{
+			Gizmos.color = Color.blue;
+			Gizmos.DrawWireSphere(target.position, ResourcesMaster.instance.danceMatProperties.hitRadius);			
+		}
 	}
 }
