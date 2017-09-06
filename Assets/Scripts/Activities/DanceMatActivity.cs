@@ -88,21 +88,24 @@ public class DanceMatActivity : Activity
 		if (pressedButton != lastPressedInput)
 		{
 			Transform closestGrape = GetClosestGrape();
-			float hitRadius = ResourcesMaster.instance.danceMatProperties.hitRadius;
-			if ((closestGrape.position - target.position).sqrMagnitude < hitRadius * hitRadius)
+			if (closestGrape)
 			{
-				fallingGrapes.Remove(closestGrape);
-				Destroy(closestGrape.gameObject);
-				float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
-				ResourcesMaster.AddResource(generatedResourceName, resourcePerTap);
-			}
-			else
-			{
-				feedbackPanel.SetAlpha(0f);
-				feedbackPanel.DOFade(0.5f, 0.5f).From();
-				float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
-				float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap;
-				ResourcesMaster.RemoveRequiredResource(generatedResourceName, usedResources);
+				float hitRadius = ResourcesMaster.instance.danceMatProperties.hitRadius;
+				if ((closestGrape.position - target.position).sqrMagnitude < hitRadius * hitRadius)
+				{
+					fallingGrapes.Remove(closestGrape);
+					Destroy(closestGrape.gameObject);
+					float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
+					ResourcesMaster.AddResource(generatedResourceName, resourcePerTap);
+				}
+				else
+				{
+					feedbackPanel.SetAlpha(0f);
+					feedbackPanel.DOFade(0.5f, 0.5f).From();
+					float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
+					float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap;
+					ResourcesMaster.RemoveRequiredResource(generatedResourceName, usedResources);
+				}				
 			}
 		}
 
@@ -125,6 +128,9 @@ public class DanceMatActivity : Activity
 
 	private Transform GetClosestGrape()
 	{
+		if (fallingGrapes.Count == 0)
+			return null;
+
 		Transform closestGrape = fallingGrapes[0];
 		for (int i = 0; i < fallingGrapes.Count; i++)
 		{

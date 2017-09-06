@@ -17,6 +17,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Main.unity
     guid: 4a360933439985f4ebc915ab8d7f3c20
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Mobile Button.unity
     guid: e3b2a08e4c17ec04e8555a43042812cb

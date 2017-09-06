@@ -11,6 +11,7 @@ namespace EasyWiFi.ClientControls
 
         public string controlName = "Button1";
         public Sprite buttonPressedSprite;
+		public Text debugText;
 
         ButtonControllerType button;
         Image currentImage;
@@ -59,6 +60,7 @@ namespace EasyWiFi.ClientControls
                     Touch touch = Input.GetTouch(i);
 					if (touch.phase == TouchPhase.Began)
 					{
+						debugText.text = "Button pressed at time: " + Time.time;
 						pressed = true;
 						break;
 					}
