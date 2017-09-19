@@ -12,6 +12,7 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 	public float resourcePerMicThreshold;
 
 	[Header("Resource display variables")]
+	public Gradient grapeColorGradient;
 	public float resourcePerGrape;
 	public float resourcePerJuiceHeight;
 	public float resourcePerBottle;
