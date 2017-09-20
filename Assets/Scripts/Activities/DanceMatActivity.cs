@@ -20,16 +20,22 @@ public class DanceMatActivity : Activity
 	public Transform target;
 	public SpriteRenderer feedbackPanel;
 	public Collider2D grapesKiller;
+	public Transform footTransform;
 
 	private List<Transform> fallingGrapes = new List<Transform>();
 	private DanceMatInput lastPressedInput;
 	private Array danceMatInputsArray = System.Enum.GetValues(typeof(DanceMatInput));
 	private Countdown beatCountdown;
+	private Vector3 startingFootPosition;
+	private Vector3 startingFootRotation;
 
 	private void Start()
 	{
 		float beatsInterval = ResourcesMaster.instance.danceMatProperties.beatsInterval;
 		beatCountdown = Countdown.New(beatsInterval, SpawnGrape, UpdateGrapesPosition, true);
+
+		startingFootPosition = footTransform.position;
+		startingFootRotation = footTransform.eulerAngles;
 	}
 
 	private void Update()
@@ -87,6 +93,7 @@ public class DanceMatActivity : Activity
 		//	increases the score
 		if (pressedButton != lastPressedInput)
 		{
+			DoFootStep();
 			Transform closestGrape = GetClosestGrape();
 			if (closestGrape)
 			{
@@ -141,6 +148,20 @@ public class DanceMatActivity : Activity
 		}
 
 		return closestGrape;
+	}
+
+	private void DoFootStep()
+	{
+		DOTween.Kill("FootStep");
+
+		footTransform.position = startingFootPosition;
+		footTransform.rotation = Quaternion.Euler(startingFootRotation + new Vector3(0f, 0f, UnityEngine.Random.Range(-8f, 8f)));
+
+		Sequence sequence = DOTween.Sequence();
+
+		sequence.Append(footTransform.DOMove(target.position, 0.1f));
+		sequence.Append(footTransform.DOMove(startingFootPosition, 1f));
+		sequence.SetId("FootStep");
 	}
 
 	private void OnDrawGizmosSelected()
