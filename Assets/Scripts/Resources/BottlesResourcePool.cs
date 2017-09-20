@@ -8,10 +8,18 @@ public class BottlesResourcePool : MonoBehaviour
 	public GameObject bottlePrefab;
 	public Transform bottlesParent;
 
+	public AudioClip bottlePopping;
+	public AudioSource sfxAudioSource;
+
 	public string displayedResource;
 	private float lastDisplayedAmount;
 
 	private List<GameObject> bottles = new List<GameObject>();
+
+	private void Awake()
+	{
+		sfxAudioSource = GetComponent<AudioSource>();
+	}
 
 	private void Update()
 	{
@@ -29,6 +37,7 @@ public class BottlesResourcePool : MonoBehaviour
 		float resourcesPerBottle = ResourcesMaster.instance.resourcePerBottle;
 		if ((lastDisplayedAmount - resourcesPerBottle * bottles.Count) >= resourcesPerBottle)
 		{
+			sfxAudioSource.PlayOneShot(bottlePopping);
 			bottles.Add(Instantiate<GameObject>(bottlePrefab, bottlesParent));
 		}		
 	}

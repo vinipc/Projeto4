@@ -14,8 +14,9 @@ public class GrapesActivity : Activity
 	private Countdown bunchSpawnCountdown;
 	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		SpawnGrape();
 	}
 

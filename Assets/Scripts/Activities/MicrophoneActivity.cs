@@ -17,7 +17,7 @@ public class MicrophoneActivity : Activity
 	public float clapVolume;
 
 	private float[] _samples;
-	private AudioSource audioSource;
+	private AudioSource micAudioSource;
 
 	private float lastFrameVolume = 0f;
 	private bool isAmbientVolume;
@@ -26,7 +26,7 @@ public class MicrophoneActivity : Activity
 	protected override void Awake()
 	{
 		base.Awake();
-		audioSource = GetComponent<AudioSource>();
+		micAudioSource = GetComponent<AudioSource>();
 	}
 
 	private void Start() 
@@ -71,7 +71,7 @@ public class MicrophoneActivity : Activity
 	private float GetAverageVolume()
 	{
 		float average = 0.0f;
-		audioSource.GetOutputData(_samples, 0);
+		micAudioSource.GetOutputData(_samples, 0);
 
 		for (int i = 0; i < _samples.Length; i++)
 		{
@@ -99,22 +99,22 @@ public class MicrophoneActivity : Activity
 
 		// Do the microphone audio setup
 		AudioClip audioClip = Microphone.Start(primaryAudioRecordingDevice, true, 10, 44100);
-		audioSource.loop = true;
-		audioSource.mute = false;
-		audioSource.clip = audioClip;
+		micAudioSource.loop = true;
+		micAudioSource.mute = false;
+		micAudioSource.clip = audioClip;
 
 		// Gambeta
 		while (!(Microphone.GetPosition(null) > 0)) { }
 
 		// Reproduces teh audio recorded from the mic
-		audioSource.Play();
+		micAudioSource.Play();
 	}
 
 	private void OnAudioConfigurationChanged(bool deviceWasChanged)
 	{ 
 		if (deviceWasChanged) 
 		{
-			audioSource.Stop();
+			micAudioSource.Stop();
 			SetupMicrophoneInput();
 		}
 	}

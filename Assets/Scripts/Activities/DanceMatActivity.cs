@@ -21,6 +21,7 @@ public class DanceMatActivity : Activity
 	public SpriteRenderer feedbackPanel;
 	public Collider2D grapesKiller;
 	public Transform footTransform;
+	public AudioClip grapeSquashing;
 
 	private List<Transform> fallingGrapes = new List<Transform>();
 	private DanceMatInput lastPressedInput;
@@ -28,6 +29,13 @@ public class DanceMatActivity : Activity
 	private Countdown beatCountdown;
 	private Vector3 startingFootPosition;
 	private Vector3 startingFootRotation;
+	private AudioSource audioSource;
+
+	protected override void Awake()
+	{
+		base.Awake();
+		audioSource = GetComponent<AudioSource>();
+	}
 
 	private void Start()
 	{
@@ -70,7 +78,7 @@ public class DanceMatActivity : Activity
 	}
 
 	private void SpawnGrape()
-	{		
+	{
 		float requiredAmount = ResourcesMaster.instance.danceMatProperties.resourcesPerTap * generatedResource.requiredToGeneratedRatio;
 		if (ResourcesMaster.GetResourceAmount(requiredResource.uniqueName) < requiredAmount)
 			return;
@@ -100,6 +108,7 @@ public class DanceMatActivity : Activity
 				float hitRadius = ResourcesMaster.instance.danceMatProperties.hitRadius;
 				if ((closestGrape.position - target.position).sqrMagnitude < hitRadius * hitRadius)
 				{
+					audioSource.PlayOneShot(grapeSquashing);
 					fallingGrapes.Remove(closestGrape);
 					Destroy(closestGrape.gameObject);
 					float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
