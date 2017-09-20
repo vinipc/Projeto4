@@ -61,7 +61,7 @@ MonoBehaviour:
   - uniqueName: bottle
     requiredResourceName: juice
     requiredToGeneratedRatio: 10
-  resourcePerButtonTap: 5
+  resourcePerButtonTap: 25
   danceMatProperties:
     resourcesPerTap: 1
     hitRadius: 0.2

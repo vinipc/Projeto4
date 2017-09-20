@@ -10,14 +10,14 @@ public class GrapesBunch : MonoBehaviour
 	public float colorOffsetRange = 0.05f;
 
 	public AnimationCurve sizeCurve;
-	private SpriteRenderer[] grapes;
+	private List<SpriteRenderer> grapes = new List<SpriteRenderer>();
 	private Color[] grapeColorOffset;
 	private float grapesSize;
 
 	private void Awake()
 	{
-		grapes = GetComponentsInChildren<SpriteRenderer>();
-		grapeColorOffset = new Color[grapes.Length];
+		grapes.AddRange(GetComponentsInChildren<SpriteRenderer>());
+		grapeColorOffset = new Color[grapes.Count];
 		grapesSize = grapes[0].transform.localScale.x;
 
 		for (int i = 0; i < grapeColorOffset.Length; i++)
@@ -28,6 +28,16 @@ public class GrapesBunch : MonoBehaviour
 		Update();
 	}
 
+	public void RemoveGrape()
+	{
+		SpriteRenderer grape = grapes.GetRandom();
+		grapes.Remove(grape);
+		Destroy(grape.gameObject);
+
+		if (grapes.Count == 0)
+			Destroy(gameObject);
+	}
+
 	private void Update()
 	{
 		SetColors(lifetime);
@@ -36,7 +46,7 @@ public class GrapesBunch : MonoBehaviour
 
 	private void SetColors(float percentage)
 	{
-		for (int i = 0; i < grapes.Length; i++)
+		for (int i = 0; i < grapes.Count; i++)
 		{
 			Color newColor = ResourcesMaster.instance.grapeColorGradient.Evaluate(percentage);
 			newColor += grapeColorOffset[i];
@@ -46,7 +56,7 @@ public class GrapesBunch : MonoBehaviour
 
 	private void SetSizes(float percentage)
 	{
-		for (int i = 0; i < grapes.Length; i++)
+		for (int i = 0; i < grapes.Count; i++)
 		{
 			grapes[i].transform.localScale = Vector3.one * grapesSize * sizeCurve.Evaluate(percentage);
 		}

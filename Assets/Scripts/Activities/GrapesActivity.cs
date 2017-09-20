@@ -12,7 +12,7 @@ public class GrapesActivity : Activity
 	public float bunchesLifetime = 1f;
 
 	private Countdown bunchSpawnCountdown;
-	private List<GrapesBunch> bunches = new List<GrapesBunch>();
+	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
 
 	private void Awake()
 	{
@@ -42,37 +42,40 @@ public class GrapesActivity : Activity
 		position.y = Random.Range(spawnAreaCenter.position.y - spawnAreaSize.y / 2f, spawnAreaCenter.position.y + spawnAreaSize.y / 2f);
 
 		GrapesBunch newBunch = Instantiate<GrapesBunch>(bunchPrefab, position, bunchPrefab.transform.rotation, spawnAreaCenter);
-		bunches.Add(newBunch);
+		growingBunches.Add(newBunch);
 
 		bunchSpawnCountdown = Countdown.New(Random.Range(spawnInterval.x, spawnInterval.y), SpawnGrape);
 	}
 
 	private void UpdateBunches()
 	{
-		for (int i = 0; i < bunches.Count; i++)
+		for (int i = 0; i < growingBunches.Count; i++)
 		{
-			bunches[i].lifetime = Mathf.Min(1f, bunches[i].lifetime + Time.deltaTime / bunchesLifetime);
+			growingBunches[i].lifetime = Mathf.Min(1f, growingBunches[i].lifetime + Time.deltaTime / bunchesLifetime);
 		}
 	}
 
 	private void CollectBunches()
 	{
-		List<GrapesBunch> removedGrapes = new List<GrapesBunch>();
-		for (int i = 0; i < bunches.Count; i++)
+		List<GrapesBunch> collectedBunches = new List<GrapesBunch>();
+		for (int i = 0; i < growingBunches.Count; i++)
 		{
-			if (bunches[i].lifetime >= 0.15f)
+			if (growingBunches[i].lifetime >= 0.15f)
 			{
 				ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
-				removedGrapes.Add(bunches[i]);
+				collectedBunches.Add(growingBunches[i]);
 
-				Rigidbody2D bunchRb = bunches[i].GetComponent<Rigidbody2D>();
+				Rigidbody2D bunchRb = growingBunches[i].GetComponent<Rigidbody2D>();
 				bunchRb.simulated = true;
-				bunchRb.AddForce(new Vector2(Random.Range(0f, 2f), Random.Range(0, 5f)), ForceMode2D.Impulse);
+				bunchRb.AddForce(new Vector2(Random.Range(0f, 1f), Random.Range(0, 5f)), ForceMode2D.Impulse);
+				Countdown.New(1f, ()=> Destroy(bunchRb.gameObject));
 			}
 		}
 
-		for (int i = 0; i < removedGrapes.Count; i++)
-			bunches.Remove(removedGrapes[i]);
+		for (int i = 0; i < collectedBunches.Count; i++)
+		{
+			growingBunches.Remove(collectedBunches[i]);
+		}
 	}
 
 	private void OnDrawGizmosSelected()

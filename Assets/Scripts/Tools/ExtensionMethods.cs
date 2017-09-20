@@ -16,6 +16,11 @@ public static class ExtensionMethods
 		list.RemoveAt(list.Count - 1);
 		return list.Count;
 	}
+
+	public static T GetRandom<T>(this List<T> list)
+	{
+		return list[UnityEngine.Random.Range(0, list.Count)];
+	}
 	#endregion
 
 	#region Built-in Array
