@@ -9,10 +9,27 @@ public class GrapesResourcePool : MonoBehaviour
 	public Transform spawnPoint;
 	public float spawnRadius = 1f;
 	public string displayedResource;
-
-	private float displayedAmount = 0;
+    private float displayedAmount = 0;
 	private List<GameObject> grapes = new List<GameObject>();
+    
+    
+    //Audio
+    AudioSource audioS;
 
+    
+    private void Start()
+    {
+        audioS = GetComponent<AudioSource>();
+    }
+
+    private void PopGrapeAudio()
+    {
+        audioS.pitch = Random.Range(0.8f, 1.55f);
+        audioS.Play();
+    }
+
+
+    //
 	private void Update()
 	{
 		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);
@@ -46,6 +63,7 @@ public class GrapesResourcePool : MonoBehaviour
 				newGrape.transform.SetParent(spawnPoint, true);
 				newGrape.transform.localScale *= Random.Range(0.9f, 1.1f);
 				grapes.Add(newGrape);
+                PopGrapeAudio();
 			}
 		}
 	}
