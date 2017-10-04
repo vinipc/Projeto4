@@ -13,6 +13,7 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 
 	[Header("Resource display variables")]
 	public Gradient grapeColorGradient;
+	public int grapesPerBunch;
 	public float resourcePerGrape;
 	public float resourcePerJuiceHeight;
 	public float resourcePerBottle;

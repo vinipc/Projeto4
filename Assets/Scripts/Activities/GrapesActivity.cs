@@ -6,10 +6,17 @@ using DG.Tweening;
 public class GrapesActivity : Activity
 {
 	public GrapesBunch bunchPrefab;
-	public Vector2 spawnInterval;
-	public Vector2 spawnAreaSize;
-	public Transform spawnAreaCenter;
+	public Vector2 bunchSpawnInterval;
+	public Vector2 bunchSpawnAreaSize;
+	public Transform bunchSpawnCenter;
 	public float bunchesLifetime = 1f;
+
+	public Grape grapePrefab;
+	public Vector2 grapeSpawnArea;
+	public Transform grapeSpawnCenter;
+
+	public Rigidbody2D paddleRigidbody;
+	public float paddleTorque = 10f;
 
 	private Countdown bunchSpawnCountdown;
 	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
@@ -17,7 +24,7 @@ public class GrapesActivity : Activity
 	protected override void Awake()
 	{
 		base.Awake();
-		SpawnGrape();
+		SpawnBunch();
 	}
 
 	public void Update()
@@ -25,10 +32,16 @@ public class GrapesActivity : Activity
 		UpdateBunches();
 
 		if (Input.GetKeyDown(KeyCode.Q))
-			OnButtonPressed();
+			OnShakeDetected();
+
+		if (Input.GetKeyDown(KeyCode.LeftArrow))
+			paddleRigidbody.AddTorque(paddleTorque);
+
+		if (Input.GetKeyDown(KeyCode.RightArrow))
+			paddleRigidbody.AddTorque(-paddleTorque);
 	}
 
-	public void OnButtonPressed()
+	public void OnShakeDetected()
 	{		
 		if (GameMaster.isCounting)
 		{
@@ -36,16 +49,21 @@ public class GrapesActivity : Activity
 		}
 	}
 
-	private void SpawnGrape()
+	public void AddGrapes()
+	{
+		ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
+	}
+
+	private void SpawnBunch()
 	{
 		Vector2 position = new Vector2();
-		position.x = Random.Range(spawnAreaCenter.position.x - spawnAreaSize.x / 2f, spawnAreaCenter.position.x + spawnAreaSize.x / 2f);
-		position.y = Random.Range(spawnAreaCenter.position.y - spawnAreaSize.y / 2f, spawnAreaCenter.position.y + spawnAreaSize.y / 2f);
+		position.x = Random.Range(bunchSpawnCenter.position.x - bunchSpawnAreaSize.x / 2f, bunchSpawnCenter.position.x + bunchSpawnAreaSize.x / 2f);
+		position.y = Random.Range(bunchSpawnCenter.position.y - bunchSpawnAreaSize.y / 2f, bunchSpawnCenter.position.y + bunchSpawnAreaSize.y / 2f);
 
-		GrapesBunch newBunch = Instantiate<GrapesBunch>(bunchPrefab, position, bunchPrefab.transform.rotation, spawnAreaCenter);
+		GrapesBunch newBunch = Instantiate<GrapesBunch>(bunchPrefab, position, bunchPrefab.transform.rotation, bunchSpawnCenter);
 		growingBunches.Add(newBunch);
 
-		bunchSpawnCountdown = Countdown.New(Random.Range(spawnInterval.x, spawnInterval.y), SpawnGrape);
+		bunchSpawnCountdown = Countdown.New(Random.Range(bunchSpawnInterval.x, bunchSpawnInterval.y), SpawnBunch);
 	}
 
 	private void UpdateBunches()
@@ -62,14 +80,22 @@ public class GrapesActivity : Activity
 		for (int i = 0; i < growingBunches.Count; i++)
 		{
 			if (growingBunches[i].lifetime >= 0.15f)
-			{
-				ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
+			{				
 				collectedBunches.Add(growingBunches[i]);
-
 				Rigidbody2D bunchRb = growingBunches[i].GetComponent<Rigidbody2D>();
 				bunchRb.simulated = true;
 				bunchRb.AddForce(new Vector2(Random.Range(0f, 1f), Random.Range(0, 5f)), ForceMode2D.Impulse);
-				Countdown.New(1f, ()=> Destroy(bunchRb.gameObject));
+				Destroy(bunchRb.gameObject, 1f);
+			}
+
+			for (int j = 0; j < ResourcesMaster.instance.grapesPerBunch; j++)
+			{
+				Vector2 position = new Vector2();
+				position.x = Random.Range(grapeSpawnCenter.position.x - grapeSpawnArea.x / 2f, grapeSpawnCenter.position.x + grapeSpawnArea.x / 2f);
+				position.y = Random.Range(grapeSpawnCenter.position.y - grapeSpawnArea.y / 2f, grapeSpawnCenter.position.y + grapeSpawnArea.y / 2f);
+
+				Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
+				newGrape.SetColor(growingBunches[i].lifetime);
 			}
 		}
 
@@ -82,6 +108,6 @@ public class GrapesActivity : Activity
 	private void OnDrawGizmosSelected()
 	{
 		Gizmos.color = Color.blue;
-		Gizmos.DrawWireCube(spawnAreaCenter.position, spawnAreaSize);
+		Gizmos.DrawWireCube(bunchSpawnCenter.position, bunchSpawnAreaSize);
 	}
 }

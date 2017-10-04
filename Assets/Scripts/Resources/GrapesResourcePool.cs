@@ -11,27 +11,22 @@ public class GrapesResourcePool : MonoBehaviour
 	public string displayedResource;
     private float displayedAmount = 0;
 	private List<GameObject> grapes = new List<GameObject>();
-    
-    
-    //Audio
-    AudioSource audioS;
-
+	private AudioSource audioSource;
     
     private void Start()
     {
-        audioS = GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void PopGrapeAudio()
     {
-        audioS.pitch = Random.Range(0.8f, 1.55f);
-        audioS.Play();
+        audioSource.pitch = Random.Range(0.8f, 1.55f);
+        audioSource.Play();
     }
 
-
-    //
 	private void Update()
 	{
+		/*
 		float currentAmount = ResourcesMaster.GetResourceAmount(displayedResource);
 		if (currentAmount != displayedAmount)
 		{
@@ -39,6 +34,7 @@ public class GrapesResourcePool : MonoBehaviour
 			UpdateGrapesQuantity();
 			displayedAmount = currentAmount;
 		}
+		*/
 	}
 
 	private void UpdateGrapesQuantity()
