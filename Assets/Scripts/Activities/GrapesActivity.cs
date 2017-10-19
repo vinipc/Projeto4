@@ -20,6 +20,7 @@ public class GrapesActivity : Activity
 
 	private Countdown bunchSpawnCountdown;
 	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
+	private List<Grape> collectedGrapes = new List<Grape>();
 
 	protected override void Awake()
 	{
@@ -52,6 +53,22 @@ public class GrapesActivity : Activity
 	public void AddGrapes()
 	{
 		ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
+	}
+
+	public Grape GetCollectedGrape()
+	{
+		if (collectedGrapes.Count == 0)
+			return null;
+		else
+			return collectedGrapes.GetRandom();
+	}
+
+	public void RemoveGrapeWithValue(float colorValue)
+	{
+		Grape grape = collectedGrapes.Find(g => g.colorSpectrumValue == colorValue);
+		collectedGrapes.Remove(grape);
+		if (grape != null)
+			Destroy(grape.gameObject);
 	}
 
 	private void SpawnBunch()
@@ -96,6 +113,7 @@ public class GrapesActivity : Activity
 
 				Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
 				newGrape.SetColor(growingBunches[i].lifetime);
+				collectedGrapes.Add(newGrape);
 			}
 		}
 

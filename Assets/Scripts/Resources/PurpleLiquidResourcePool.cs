@@ -27,5 +27,8 @@ public class PurpleLiquidResourcePool : MonoBehaviour
 		Vector3 localScale = purpleLiquid.localScale;
 		localScale.y = (float) lastDisplayedAmount / (float) resourcePerHeight;
 		purpleLiquid.localScale = localScale;
+
+		float color = GetComponent<DanceMatActivity>().GetAverageColor();
+		purpleLiquid.GetComponent<SpriteRenderer>().color = ResourcesMaster.instance.grapeColorGradient.Evaluate(color);
 	}
 }

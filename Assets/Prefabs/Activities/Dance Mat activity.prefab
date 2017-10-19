@@ -533,7 +533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   generatedResourceName: juice
   spawnPoint: {fileID: 4544990419425832}
-  grapePrefab: {fileID: 4364519743511158, guid: 5f64bb3a5b57e6749a26f7f82ae6a608,
+  grapePrefab: {fileID: 114486868962949154, guid: 5f64bb3a5b57e6749a26f7f82ae6a608,
     type: 2}
   target: {fileID: 4006666348316288}
   feedbackPanel: {fileID: 212522690988649364}
