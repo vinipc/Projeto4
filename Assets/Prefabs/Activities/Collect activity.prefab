@@ -38,9 +38,11 @@ GameObject:
   m_Component:
   - component: {fileID: 4842395572285034}
   - component: {fileID: 114045892861246414}
+  - component: {fileID: 114229775576494552}
+  - component: {fileID: 114492497962927168}
   - component: {fileID: 114266162985378912}
   m_Layer: 0
-  m_Name: Shake activity
+  m_Name: Collect activity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -701,9 +703,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2610d61dfb3850d48a33ace0445018e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  control: Button1
+  control: Shake
   player: 999
-  notifyMethod: OnButtonPressed
+  notifyMethod: OnShakeDetected
+  callType: 1
+--- !u!114 &114229775576494552
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049759114703922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2610d61dfb3850d48a33ace0445018e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  control: LeftButton
+  player: 999
+  notifyMethod: OnLeftButtonPressed
   callType: 1
 --- !u!114 &114266162985378912
 MonoBehaviour:
@@ -743,6 +760,21 @@ MonoBehaviour:
   m_EffectColor: {r: 0.34117648, g: 0.18039216, b: 0.027450982, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &114492497962927168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049759114703922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2610d61dfb3850d48a33ace0445018e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  control: RightButton
+  player: 999
+  notifyMethod: OnRightButtonPressed
+  callType: 1
 --- !u!114 &114561357728368158
 MonoBehaviour:
   m_ObjectHideFlags: 1

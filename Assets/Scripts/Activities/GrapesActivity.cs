@@ -50,6 +50,18 @@ public class GrapesActivity : Activity
 		}
 	}
 
+	public void OnLeftButtonPressed()
+	{
+		if (GameMaster.isCounting)
+			paddleRigidbody.AddTorque(paddleTorque);
+	}
+
+	public void OnRightButtonPressed()
+	{
+		if (GameMaster.isCounting)
+			paddleRigidbody.AddTorque(-paddleTorque);
+	}
+
 	public void AddGrapes()
 	{
 		ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
@@ -103,17 +115,17 @@ public class GrapesActivity : Activity
 				bunchRb.simulated = true;
 				bunchRb.AddForce(new Vector2(Random.Range(0f, 1f), Random.Range(0, 5f)), ForceMode2D.Impulse);
 				Destroy(bunchRb.gameObject, 1f);
-			}
 
-			for (int j = 0; j < ResourcesMaster.instance.grapesPerBunch; j++)
-			{
-				Vector2 position = new Vector2();
-				position.x = Random.Range(grapeSpawnCenter.position.x - grapeSpawnArea.x / 2f, grapeSpawnCenter.position.x + grapeSpawnArea.x / 2f);
-				position.y = Random.Range(grapeSpawnCenter.position.y - grapeSpawnArea.y / 2f, grapeSpawnCenter.position.y + grapeSpawnArea.y / 2f);
-
-				Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
-				newGrape.SetColor(growingBunches[i].lifetime);
-				collectedGrapes.Add(newGrape);
+				for (int j = 0; j < ResourcesMaster.instance.grapesPerBunch; j++)
+				{
+					Vector2 position = new Vector2();
+					position.x = Random.Range(grapeSpawnCenter.position.x - grapeSpawnArea.x / 2f, grapeSpawnCenter.position.x + grapeSpawnArea.x / 2f);
+					position.y = Random.Range(grapeSpawnCenter.position.y - grapeSpawnArea.y / 2f, grapeSpawnCenter.position.y + grapeSpawnArea.y / 2f);
+					
+					Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
+					newGrape.SetColor(growingBunches[i].lifetime);
+					collectedGrapes.Add(newGrape);
+				}
 			}
 		}
 
