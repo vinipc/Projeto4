@@ -19,7 +19,7 @@ public static class ExtensionMethods
 
 	public static T GetRandom<T>(this List<T> list)
 	{
-		return list[UnityEngine.Random.Range(0, list.Count)];
+		return list.Count > 0 ? list[UnityEngine.Random.Range(0, list.Count)] : default(T);
 	}
 	#endregion
 

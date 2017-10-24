@@ -18,13 +18,11 @@ public class GrapesActivity : Activity
 	public Rigidbody2D paddleRigidbody;
 	public float paddleTorque = 10f;
 
-	private Countdown bunchSpawnCountdown;
-	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
 	private List<Grape> collectedGrapes = new List<Grape>();
+	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
 
 	protected override void Awake()
 	{
-		base.Awake();
 		SpawnBunch();
 	}
 
@@ -42,6 +40,7 @@ public class GrapesActivity : Activity
 			paddleRigidbody.AddTorque(-paddleTorque);
 	}
 
+	#region Input detection
 	public void OnShakeDetected()
 	{		
 		if (GameMaster.isCounting)
@@ -61,28 +60,29 @@ public class GrapesActivity : Activity
 		if (GameMaster.isCounting)
 			paddleRigidbody.AddTorque(-paddleTorque);
 	}
+	#endregion
 
-	public void AddGrapes()
+	#region Grapes
+	public void CollectGrape(Grape grape)
 	{
-		ResourcesMaster.AddResource(generatedResourceName, ResourcesMaster.instance.resourcePerButtonTap);
+		collectedGrapes.Add(grape);
+		GameMaster.instance.danceMatActivity.AddCollectedGrape(grape);
 	}
 
-	public Grape GetCollectedGrape()
+	private void RemoveGrape(Grape grape)
 	{
-		if (collectedGrapes.Count == 0)
-			return null;
-		else
-			return collectedGrapes.GetRandom();
+		collectedGrapes.Remove(grape);
+		Destroy(grape.gameObject);
 	}
-
-	public void RemoveGrapeWithValue(float colorValue)
+	
+	public void RemoveGrapeByColor(float colorValue)
 	{
 		Grape grape = collectedGrapes.Find(g => g.colorSpectrumValue == colorValue);
-		collectedGrapes.Remove(grape);
-		if (grape != null)
-			Destroy(grape.gameObject);
+		RemoveGrape(grape);
 	}
+	#endregion
 
+	#region Bunches
 	private void SpawnBunch()
 	{
 		Vector2 position = new Vector2();
@@ -92,7 +92,7 @@ public class GrapesActivity : Activity
 		GrapesBunch newBunch = Instantiate<GrapesBunch>(bunchPrefab, position, bunchPrefab.transform.rotation, bunchSpawnCenter);
 		growingBunches.Add(newBunch);
 
-		bunchSpawnCountdown = Countdown.New(Random.Range(bunchSpawnInterval.x, bunchSpawnInterval.y), SpawnBunch);
+		Countdown.New(Random.Range(bunchSpawnInterval.x, bunchSpawnInterval.y), SpawnBunch);
 	}
 
 	private void UpdateBunches()
@@ -124,7 +124,6 @@ public class GrapesActivity : Activity
 					
 					Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
 					newGrape.SetColor(growingBunches[i].lifetime);
-					collectedGrapes.Add(newGrape);
 				}
 			}
 		}
@@ -134,6 +133,7 @@ public class GrapesActivity : Activity
 			growingBunches.Remove(collectedBunches[i]);
 		}
 	}
+	#endregion
 
 	private void OnDrawGizmosSelected()
 	{

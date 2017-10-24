@@ -31,6 +31,18 @@ public class DanceMatActivity : Activity
 	private Vector3 startingFootPosition;
 	private Vector3 startingFootRotation;
 	private AudioSource audioSource;
+	private List<float> grapeColorsPool = new List<float>();
+
+	private GrapesActivity _grapesActivity;
+	private GrapesActivity grapesActivity
+	{
+		get
+		{
+			if (_grapesActivity == null)
+				_grapesActivity = FindObjectOfType<GrapesActivity>();
+			return _grapesActivity;
+		}
+	}
 
 	protected override void Awake()
 	{
@@ -75,23 +87,32 @@ public class DanceMatActivity : Activity
 		{
 			fallingGrapes.Remove(flaggedGrapes[i]);
 			Destroy(flaggedGrapes[i].gameObject);
+			grapeColorsPool.Add(flaggedGrapes[i].colorSpectrumValue);
 		}
 	}
 
 	private void SpawnGrape()
 	{
-		GrapesActivity grapesActivity = FindObjectOfType<GrapesActivity>();
-		Grape grape = grapesActivity.GetCollectedGrape();
-		float requiredAmount = ResourcesMaster.instance.danceMatProperties.resourcesPerTap * generatedResource.requiredToGeneratedRatio;
-		if (ResourcesMaster.GetResourceAmount(requiredResource.uniqueName) < requiredAmount || grape == null)
+		if (grapeColorsPool.Count == 0)
 			return;
 
+		float grapeColor = grapeColorsPool.GetRandom();
 		Grape newGrape = Instantiate<Grape>(grapePrefab, spawnPoint.position, Quaternion.identity);
 		newGrape.transform.SetParent(spawnPoint, true);
-		fallingGrapes.Add(newGrape);
+		newGrape.SetColor(grapeColor);
 
-		float colorValue = grape.colorSpectrumValue;
-		newGrape.SetColor(colorValue);
+		fallingGrapes.Add(newGrape);
+		grapeColorsPool.Remove(grapeColor);
+	}
+
+	public void AddCollectedGrape(Grape grape)
+	{
+		grapeColorsPool.Add(grape.colorSpectrumValue);
+	}
+
+	private void StepOnGrape(Grape steppedGrape)
+	{
+		GameMaster.instance.collectActivity.RemoveGrapeByColor(steppedGrape.colorSpectrumValue);
 	}
 
 	private void CheckInput()
@@ -115,6 +136,7 @@ public class DanceMatActivity : Activity
 				if ((closestGrape.transform.position - target.position).sqrMagnitude < hitRadius * hitRadius)
 				{
 					audioSource.PlayOneShot(grapeSquashing);
+					fallingGrapes.Remove(closestGrape);
 					Destroy(closestGrape.gameObject);
 					float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
 					ResourcesMaster.AddResource(generatedResourceName, resourcePerTap);
@@ -127,21 +149,20 @@ public class DanceMatActivity : Activity
 				{
 					feedbackPanel.SetAlpha(0f);
 					feedbackPanel.DOFade(0.5f, 0.5f).From();
-					float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
-					float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap;
-					ResourcesMaster.RemoveRequiredResource(generatedResourceName, usedResources);
+					//float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
+					//float usedResources = ResourcesMaster.GetResourceData(generatedResourceName).requiredToGeneratedRatio * resourcePerTap;
+					//ResourcesMaster.RemoveRequiredResource(generatedResourceName, usedResources);
 				}				
 
 				fallingGrapes.Remove(closestGrape);
 				Destroy(closestGrape.gameObject);
-				FindObjectOfType<GrapesActivity>().RemoveGrapeWithValue(closestGrape.colorSpectrumValue);
+				GameMaster.instance.collectActivity.RemoveGrapeByColor(closestGrape.colorSpectrumValue);
 			}
 		}
 
 		// Saves current button as last pressed button for next frame.
 		lastPressedInput = pressedButton;
 	}
-		
 
 	// Returns which mat button was pressed on the current frame.
 	private DanceMatInput GetDanceMatKeyDown()

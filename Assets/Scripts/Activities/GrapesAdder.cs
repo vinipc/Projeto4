@@ -13,9 +13,10 @@ public class GrapesAdder : MonoBehaviour
 
 	public void OnTriggerEnter2D(Collider2D coll)
 	{
-		if (coll.gameObject.CompareTag("Grape"))
+		Grape grape = coll.gameObject.GetComponent<Grape>();
+		if (grape != null)
 		{
-			grapesActivity.AddGrapes();
+			grapesActivity.CollectGrape(grape);
 		}
 	}
 }

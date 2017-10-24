@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameMaster : MonoBehaviour 
+public class GameMaster : Singleton<GameMaster> 
 {
 	public static bool isCounting = true;
 
@@ -16,10 +16,11 @@ public class GameMaster : MonoBehaviour
 	public Color timerEmptyColor = Color.red; // Timer color when it's empty
 
 	public Transform activitiesParent;
-	public Activity[] activitiesPrefabs;
+	public GrapesActivity collectActivity;
+	public DanceMatActivity danceMatActivity;
+	public MicrophoneActivity bottlingActivity;
 
 	private float currentTime;
-	private Activity[] activities;
 
 	private void Awake()
 	{
@@ -27,15 +28,6 @@ public class GameMaster : MonoBehaviour
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
 		isCounting = true;
-
-		activities = new Activity[activitiesPrefabs.Length];
-		for (int i = 0; i < activitiesPrefabs.Length; i++)
-		{
-			activities[i] = Instantiate<Activity>(activitiesPrefabs[i], activitiesParent);
-			activities[i].gameObject.SetActive(false);
-		}
-
-		activities[0].gameObject.SetActive(true);
 	}
 
 	private void Update()
@@ -46,16 +38,6 @@ public class GameMaster : MonoBehaviour
 				GameOver();
 			else
 				DecreaseTimer();
-		}
-
-		if (ResourcesMaster.GetResourceAmount(activities[0].generatedResourceName) >= 50f && !activities[1].gameObject.activeSelf)
-		{
-			activities[1].gameObject.SetActive(true);
-		}
-
-		if (ResourcesMaster.GetResourceAmount(activities[1].generatedResourceName) >= 10f && !activities[2].gameObject.activeSelf)
-		{
-			activities[2].gameObject.SetActive(true);
 		}
 
 		if (Input.GetButtonDown("Reset"))

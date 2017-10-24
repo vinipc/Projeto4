@@ -52,12 +52,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resources:
-  - uniqueName: grape
+  - uniqueName: juice
     requiredResourceName: 
     requiredToGeneratedRatio: 0
-  - uniqueName: juice
-    requiredResourceName: grape
-    requiredToGeneratedRatio: 20
   - uniqueName: bottle
     requiredResourceName: juice
     requiredToGeneratedRatio: 10
