@@ -33,17 +33,6 @@ public class DanceMatActivity : Activity
 	private AudioSource audioSource;
 	private List<float> grapeColorsPool = new List<float>();
 
-	private GrapesActivity _grapesActivity;
-	private GrapesActivity grapesActivity
-	{
-		get
-		{
-			if (_grapesActivity == null)
-				_grapesActivity = FindObjectOfType<GrapesActivity>();
-			return _grapesActivity;
-		}
-	}
-
 	protected override void Awake()
 	{
 		base.Awake();

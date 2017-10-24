@@ -56,7 +56,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4357466031329840}
-  - component: {fileID: 114879777291355930}
   - component: {fileID: 82100534626674582}
   m_Layer: 0
   m_Name: Grapes bucket
@@ -363,7 +362,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1049759114703922}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6.25, y: 1.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -851,22 +850,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 077555961aa14fc4494dfd0b20d1ca15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114879777291355930
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1080849143120310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 149634efa115a8b4d86e42999f066136, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  grapePrefab: {fileID: 1827035761176546, guid: 046a8960f340648488a3d0d1061c1d35,
-    type: 2}
-  spawnPoint: {fileID: 4416095022475240}
-  spawnRadius: 1.6
-  displayedResource: grape
 --- !u!114 &114916664419828000
 MonoBehaviour:
   m_ObjectHideFlags: 1

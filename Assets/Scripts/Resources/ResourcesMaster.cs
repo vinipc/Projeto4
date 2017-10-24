@@ -7,14 +7,12 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 	public List<ResourceData> resources;
 
 	[Header("Resource generation variables")]
-	public float resourcePerButtonTap;
 	public DanceMatActivityProperties danceMatProperties;
 	public float resourcePerMicThreshold;
 
 	[Header("Resource display variables")]
 	public Gradient grapeColorGradient;
 	public int grapesPerBunch;
-	public float resourcePerGrape;
 	public float resourcePerJuiceHeight;
 	public float resourcePerBottle;
 

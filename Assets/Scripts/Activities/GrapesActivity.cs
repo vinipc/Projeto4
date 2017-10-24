@@ -70,9 +70,12 @@ public class GrapesActivity : Activity
 	}
 
 	private void RemoveGrape(Grape grape)
-	{
-		collectedGrapes.Remove(grape);
-		Destroy(grape.gameObject);
+	{		
+		if (grape != null)
+		{
+			collectedGrapes.Remove(grape);
+			Destroy(grape.gameObject);				
+		}
 	}
 	
 	public void RemoveGrapeByColor(float colorValue)
