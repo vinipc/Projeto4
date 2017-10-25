@@ -28,6 +28,9 @@ public class GameMaster : Singleton<GameMaster>
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
 		isCounting = true;
+
+		danceMatActivity.gameObject.SetActive(false);
+		bottlingActivity.gameObject.SetActive(false);
 	}
 
 	private void Update()
@@ -39,6 +42,9 @@ public class GameMaster : Singleton<GameMaster>
 			else
 				DecreaseTimer();
 		}
+
+		if (!bottlingActivity.gameObject.activeSelf && ResourcesMaster.GetResourceAmount("juice") >= ResourcesMaster.GetResourceData("bottle").requiredToGeneratedRatio)
+			bottlingActivity.gameObject.SetActive(true);
 
 		if (Input.GetButtonDown("Reset"))
 		{

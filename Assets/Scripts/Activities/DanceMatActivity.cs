@@ -96,6 +96,9 @@ public class DanceMatActivity : Activity
 
 	public void AddCollectedGrape(Grape grape)
 	{
+		if (!gameObject.activeSelf)
+			gameObject.SetActive(true);
+		
 		grapeColorsPool.Add(grape.colorSpectrumValue);
 	}
 
