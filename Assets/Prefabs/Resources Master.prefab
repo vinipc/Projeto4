@@ -58,7 +58,7 @@ MonoBehaviour:
   - uniqueName: bottle
     requiredResourceName: juice
     requiredToGeneratedRatio: 10
-  resourcePerButtonTap: 25
+  collectedGrapesSpawnInterval: 0.3
   danceMatProperties:
     resourcesPerTap: 1
     hitRadius: 0.2
@@ -95,7 +95,6 @@ MonoBehaviour:
     m_NumColorKeys: 5
     m_NumAlphaKeys: 2
   grapesPerBunch: 8
-  resourcePerGrape: 3
   resourcePerJuiceHeight: 5
   resourcePerBottle: 1
   debug: 

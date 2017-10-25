@@ -20,10 +20,12 @@ public class GrapesActivity : Activity
 
 	private List<Grape> collectedGrapes = new List<Grape>();
 	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
+	private List<float> grapesQueue = new List<float>();
 
 	protected override void Awake()
 	{
 		SpawnBunch();
+		Countdown.New(ResourcesMaster.instance.collectedGrapesSpawnInterval, SpawnGrape, true);
 	}
 
 	public void Update()
@@ -83,6 +85,22 @@ public class GrapesActivity : Activity
 		Grape grape = collectedGrapes.Find(g => g.colorSpectrumValue == colorValue);
 		RemoveGrape(grape);
 	}
+
+	private void SpawnGrape()
+	{
+		if (grapesQueue.Count == 0)
+			return;
+		
+		float color = grapesQueue[0];
+		grapesQueue.RemoveAt(0);
+
+		Vector2 position = new Vector2();
+		position.x = Random.Range(grapeSpawnCenter.position.x - grapeSpawnArea.x / 2f, grapeSpawnCenter.position.x + grapeSpawnArea.x / 2f);
+		position.y = Random.Range(grapeSpawnCenter.position.y - grapeSpawnArea.y / 2f, grapeSpawnCenter.position.y + grapeSpawnArea.y / 2f);
+
+		Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
+		newGrape.SetColor(color);
+	}
 	#endregion
 
 	#region Bunches
@@ -109,6 +127,7 @@ public class GrapesActivity : Activity
 	private void CollectBunches()
 	{
 		List<GrapesBunch> collectedBunches = new List<GrapesBunch>();
+		List<float> collectedGrapesColors = new List<float>() ;
 		for (int i = 0; i < growingBunches.Count; i++)
 		{
 			if (growingBunches[i].lifetime >= 0.15f)
@@ -121,12 +140,7 @@ public class GrapesActivity : Activity
 
 				for (int j = 0; j < ResourcesMaster.instance.grapesPerBunch; j++)
 				{
-					Vector2 position = new Vector2();
-					position.x = Random.Range(grapeSpawnCenter.position.x - grapeSpawnArea.x / 2f, grapeSpawnCenter.position.x + grapeSpawnArea.x / 2f);
-					position.y = Random.Range(grapeSpawnCenter.position.y - grapeSpawnArea.y / 2f, grapeSpawnCenter.position.y + grapeSpawnArea.y / 2f);
-					
-					Grape newGrape = Instantiate<Grape>(grapePrefab, position, grapePrefab.transform.rotation, grapeSpawnCenter);
-					newGrape.SetColor(growingBunches[i].lifetime);
+					collectedGrapesColors.Add(growingBunches[i].lifetime * Random.Range(0.9f, 1.1f));
 				}
 			}
 		}
@@ -135,6 +149,9 @@ public class GrapesActivity : Activity
 		{
 			growingBunches.Remove(collectedBunches[i]);
 		}
+
+		collectedGrapesColors.Sort();
+		grapesQueue.AddRange(collectedGrapesColors);
 	}
 	#endregion
 
