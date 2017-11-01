@@ -6,7 +6,6 @@ using DG.Tweening;
 public class GrapesActivity : Activity
 {
 	public GrapesBunch bunchPrefab;
-	public Vector2 bunchSpawnInterval;
 	public Vector2 bunchSpawnAreaSize;
 	public Transform bunchSpawnCenter;
 	public float bunchesLifetime = 1f;
@@ -25,13 +24,11 @@ public class GrapesActivity : Activity
 	protected override void Awake()
 	{
 		SpawnBunch();
-		Countdown.New(ResourcesMaster.instance.collectedGrapesSpawnInterval, SpawnGrape, true);
+		Countdown.New(ResourcesMaster.instance.collectedGrapesSpawnInterval, SpawnGrape, false);
 	}
 
 	public void Update()
 	{
-		UpdateBunches();
-
 		if (Input.GetKeyDown(KeyCode.Q))
 			OnShakeDetected();
 
@@ -88,6 +85,8 @@ public class GrapesActivity : Activity
 
 	private void SpawnGrape()
 	{
+		Countdown.New(ResourcesMaster.instance.collectedGrapesSpawnInterval, SpawnGrape, false);
+
 		if (grapesQueue.Count == 0)
 			return;
 		
@@ -113,15 +112,11 @@ public class GrapesActivity : Activity
 		GrapesBunch newBunch = Instantiate<GrapesBunch>(bunchPrefab, position, bunchPrefab.transform.rotation, bunchSpawnCenter);
 		growingBunches.Add(newBunch);
 
-		Countdown.New(Random.Range(bunchSpawnInterval.x, bunchSpawnInterval.y), SpawnBunch);
-	}
+		Vector2 lifeTimeRange = ResourcesMaster.instance.bunchLifetimeRange;
+		newBunch.Initialize(Random.Range(lifeTimeRange.x, lifeTimeRange.y));
 
-	private void UpdateBunches()
-	{
-		for (int i = 0; i < growingBunches.Count; i++)
-		{
-			growingBunches[i].lifetime = Mathf.Min(1f, growingBunches[i].lifetime + Time.deltaTime / bunchesLifetime);
-		}
+		Vector2 intervalRange = ResourcesMaster.instance.bunchSpawnIntervalRange;
+		Countdown.New(Random.Range(intervalRange.x, intervalRange.y), SpawnBunch);
 	}
 
 	private void CollectBunches()
@@ -140,7 +135,7 @@ public class GrapesActivity : Activity
 
 				for (int j = 0; j < ResourcesMaster.instance.grapesPerBunch; j++)
 				{
-					collectedGrapesColors.Add(growingBunches[i].lifetime * Random.Range(0.9f, 1.1f));
+					collectedGrapesColors.Add((1f - growingBunches[i].lifetime) * Random.Range(0.9f, 1.1f));
 				}
 			}
 		}

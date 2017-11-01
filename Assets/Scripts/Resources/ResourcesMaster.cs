@@ -6,9 +6,18 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 {
 	public List<ResourceData> resources;
 
-	[Header("Resource generation variables")]
+	[Header("Grape collection")]
+	public Vector2 bunchLifetimeRange;
+	public Vector2 bunchSpawnIntervalRange;
 	public float collectedGrapesSpawnInterval = 0.2f;
-	public DanceMatActivityProperties danceMatProperties;
+
+	[Header("Grape stepping")]
+	public float resourcesPerTap;
+	public float hitRadius;
+	public float beatsInterval;
+	public float grapesSpeed;
+
+	[Header("Resource generation variables")]
 	public float resourcePerMicThreshold;
 
 	[Header("Resource display variables")]

@@ -5,14 +5,6 @@ using System;
 using DG.Tweening;
 
 [System.Serializable]
-public struct DanceMatActivityProperties
-{
-	public float resourcesPerTap;
-	public float hitRadius;
-	public float beatsInterval;
-	public float grapesSpeed;
-}
-
 public class DanceMatActivity : Activity
 {
 	public Transform spawnPoint;
@@ -41,7 +33,7 @@ public class DanceMatActivity : Activity
 
 	private void Start()
 	{
-		float beatsInterval = ResourcesMaster.instance.danceMatProperties.beatsInterval;
+		float beatsInterval = ResourcesMaster.instance.beatsInterval;
 		beatCountdown = Countdown.New(beatsInterval, SpawnGrape, UpdateGrapesPosition, true);
 
 		startingFootPosition = footTransform.position;
@@ -55,7 +47,7 @@ public class DanceMatActivity : Activity
 			CheckInput();
 		}
 
-		float beatsInterval = ResourcesMaster.instance.danceMatProperties.beatsInterval;
+		float beatsInterval = ResourcesMaster.instance.beatsInterval;
 		beatCountdown.totalTime = beatsInterval;
 	}
 
@@ -64,7 +56,7 @@ public class DanceMatActivity : Activity
 		List<Grape> flaggedGrapes = new List<Grape>();
 		for (int i = 0; i < fallingGrapes.Count; i++)
 		{
-			float grapesSpeed = ResourcesMaster.instance.danceMatProperties.grapesSpeed;
+			float grapesSpeed = ResourcesMaster.instance.grapesSpeed;
 			fallingGrapes[i].transform.position += (target.position - spawnPoint.position).normalized * grapesSpeed * Time.deltaTime;
 			if (grapesKiller.bounds.Contains(fallingGrapes[i].transform.position))
 			{
@@ -124,13 +116,13 @@ public class DanceMatActivity : Activity
 			Grape closestGrape = GetClosestGrape();
 			if (closestGrape)
 			{
-				float hitRadius = ResourcesMaster.instance.danceMatProperties.hitRadius;
+				float hitRadius = ResourcesMaster.instance.hitRadius;
 				if ((closestGrape.transform.position - target.position).sqrMagnitude < hitRadius * hitRadius)
 				{
 					audioSource.PlayOneShot(grapeSquashing);
 					fallingGrapes.Remove(closestGrape);
 					Destroy(closestGrape.gameObject);
-					float resourcePerTap = ResourcesMaster.instance.danceMatProperties.resourcesPerTap;
+					float resourcePerTap = ResourcesMaster.instance.resourcesPerTap;
 					ResourcesMaster.AddResource(generatedResourceName, resourcePerTap);
 
 					steppedGrapesColors.Add(closestGrape.colorSpectrumValue);
@@ -216,7 +208,7 @@ public class DanceMatActivity : Activity
 		if (ResourcesMaster.instance != null)
 		{
 			Gizmos.color = Color.blue;
-			Gizmos.DrawWireSphere(target.position, ResourcesMaster.instance.danceMatProperties.hitRadius);			
+			Gizmos.DrawWireSphere(target.position, ResourcesMaster.instance.hitRadius);
 		}
 	}
 }

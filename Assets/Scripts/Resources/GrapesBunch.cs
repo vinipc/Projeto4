@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GrapesBunch : MonoBehaviour
 {
-	[Range(0f, 1f)]
-	public float lifetime;
+	public float lifetime { get { return currentLifetime / totalLifetime; } }
+
+	public float currentLifetime;
+	public float totalLifetime;
+
 	[Range(0f, 1f)]
 	public float colorOffsetRange = 0.05f;
 
@@ -24,8 +27,13 @@ public class GrapesBunch : MonoBehaviour
 		{
 			grapeColorOffset[i] = new Color(Random.Range(0f, colorOffsetRange), Random.Range(0f, colorOffsetRange), Random.Range(0f, colorOffsetRange), 0f);
 		}
+	}
 
-		Update();
+	public void Initialize(float lifeTime)
+	{
+		currentLifetime = totalLifetime = lifeTime;
+		SetColors(0f);
+		SetSizes(0f);
 	}
 
 	public void RemoveGrape()
@@ -40,11 +48,17 @@ public class GrapesBunch : MonoBehaviour
 
 	private void Update()
 	{
-		SetColors(lifetime);
-		SetSizes(lifetime);
+		if (currentLifetime > 0f)
+		{
+			currentLifetime -= Time.deltaTime;
+			currentLifetime = Mathf.Max(0f, currentLifetime);
+			
+			SetColors(1f - lifetime);
+			SetSizes(1f - lifetime);
+		}
 	}
 
-	private void SetColors(float percentage)
+	public void SetColors(float percentage)
 	{
 		for (int i = 0; i < grapes.Count; i++)
 		{
@@ -54,7 +68,7 @@ public class GrapesBunch : MonoBehaviour
 		}
 	}
 
-	private void SetSizes(float percentage)
+	public void SetSizes(float percentage)
 	{
 		for (int i = 0; i < grapes.Count; i++)
 		{
