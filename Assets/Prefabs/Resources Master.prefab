@@ -58,13 +58,19 @@ MonoBehaviour:
   - uniqueName: bottle
     requiredResourceName: juice
     requiredToGeneratedRatio: 10
+  currentState: 0
+  statesThresholds: {x: 10, y: 30}
+  stateCheckInterval: 4
   bunchLifetimeRange: {x: 8, y: 13}
   bunchSpawnIntervalRange: {x: 1, y: 2}
-  collectedGrapesSpawnInterval: 0.3
+  defaultGrapesSpawnInterval: 0.2
+  grapeSpawnMultiplier: 1
+  bunchSpawnMultiplier: 1
   resourcesPerTap: 1
   hitRadius: 0.3
   beatsInterval: 0.4
   grapesSpeed: 3
+  grapeStepMultiplier: 1
   resourcePerMicThreshold: 1
   grapeColorGradient:
     serializedVersion: 2

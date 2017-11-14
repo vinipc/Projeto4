@@ -34,7 +34,7 @@ public class DanceMatActivity : Activity
 	private void Start()
 	{
 		float beatsInterval = ResourcesMaster.instance.beatsInterval;
-		beatCountdown = Countdown.New(beatsInterval, SpawnGrape, UpdateGrapesPosition, true);
+		beatCountdown = Countdown.New(beatsInterval, SpawnGrape);
 
 		startingFootPosition = footTransform.position;
 		startingFootRotation = footTransform.eulerAngles;
@@ -49,6 +49,7 @@ public class DanceMatActivity : Activity
 
 		float beatsInterval = ResourcesMaster.instance.beatsInterval;
 		beatCountdown.totalTime = beatsInterval;
+		UpdateGrapesPosition();
 	}
 
 	private void UpdateGrapesPosition()
@@ -84,12 +85,18 @@ public class DanceMatActivity : Activity
 
 		fallingGrapes.Add(newGrape);
 		grapeColorsPool.Remove(grapeColor);
+
+		float interval = ResourcesMaster.instance.beatsInterval * ResourcesMaster.instance.grapeStepMultiplier;
+		Countdown.New(interval, SpawnGrape);
 	}
 
 	public void AddCollectedGrape(Grape grape)
 	{
 		if (!gameObject.activeSelf)
+		{
+			GameMaster.FirstGrapeCollected();
 			gameObject.SetActive(true);
+		}
 		
 		grapeColorsPool.Add(grape.colorSpectrumValue);
 	}

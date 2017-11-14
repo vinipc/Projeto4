@@ -17,14 +17,14 @@ public class GrapesActivity : Activity
 	public Rigidbody2D paddleRigidbody;
 	public float paddleTorque = 10f;
 
-	private List<Grape> collectedGrapes = new List<Grape>();
+	public List<Grape> collectedGrapes = new List<Grape>();
 	private List<GrapesBunch> growingBunches = new List<GrapesBunch>();
 	private List<float> grapesQueue = new List<float>();
 
 	protected override void Awake()
 	{
 		SpawnBunch();
-		Countdown.New(ResourcesMaster.instance.collectedGrapesSpawnInterval, SpawnGrape, false);
+		Countdown.New(ResourcesMaster.instance.defaultGrapesSpawnInterval, SpawnGrape, false);
 	}
 
 	public void Update()
@@ -72,8 +72,8 @@ public class GrapesActivity : Activity
 	{		
 		if (grape != null)
 		{
-			collectedGrapes.Remove(grape);
-			Destroy(grape.gameObject);				
+			int removed = collectedGrapes.RemoveAll(g => g == grape);
+			Destroy(grape.gameObject);
 		}
 	}
 	
@@ -85,7 +85,8 @@ public class GrapesActivity : Activity
 
 	private void SpawnGrape()
 	{
-		Countdown.New(ResourcesMaster.instance.collectedGrapesSpawnInterval, SpawnGrape, false);
+		float interval = ResourcesMaster.instance.defaultGrapesSpawnInterval * ResourcesMaster.instance.grapeSpawnMultiplier;
+		Countdown.New(interval, SpawnGrape, false);
 
 		if (grapesQueue.Count == 0)
 			return;
@@ -116,7 +117,8 @@ public class GrapesActivity : Activity
 		newBunch.Initialize(Random.Range(lifeTimeRange.x, lifeTimeRange.y));
 
 		Vector2 intervalRange = ResourcesMaster.instance.bunchSpawnIntervalRange;
-		Countdown.New(Random.Range(intervalRange.x, intervalRange.y), SpawnBunch);
+		float interval = Random.Range(intervalRange.x, intervalRange.y) * ResourcesMaster.instance.bunchSpawnMultiplier;
+		Countdown.New(interval, SpawnBunch);
 	}
 
 	private void CollectBunches()

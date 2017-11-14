@@ -2,20 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum ResourcesState { TooLittleGrapes, JustRight, TooManyGrapes }
+
 public class ResourcesMaster : Singleton<ResourcesMaster>
 {
 	public List<ResourceData> resources;
 
+	public ResourcesState currentState;
+	public Vector2 statesThresholds;
+	public float stateCheckInterval = 4f;
+
 	[Header("Grape collection")]
 	public Vector2 bunchLifetimeRange;
 	public Vector2 bunchSpawnIntervalRange;
-	public float collectedGrapesSpawnInterval = 0.2f;
+	public float defaultGrapesSpawnInterval = 0.2f;
+	public float grapeSpawnMultiplier = 1f;
+	public float bunchSpawnMultiplier = 1f;
 
 	[Header("Grape stepping")]
 	public float resourcesPerTap;
 	public float hitRadius;
 	public float beatsInterval;
 	public float grapesSpeed;
+	public float grapeStepMultiplier = 1f;
 
 	[Header("Resource generation variables")]
 	public float resourcePerMicThreshold;
@@ -38,6 +47,8 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 		{
 			resourcePools.Add(resources[i].uniqueName, 0f);
 		}
+
+		StartCoroutine(UpdateState());
 	}
 
 	public static ResourceData GetResourceData(string name)
@@ -79,6 +90,58 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 		ResourceData resource = instance.resources.Find(res => res.uniqueName == name);
 		resourcePools[resource.uniqueName] = Mathf.Max(0f, resourcePools[resource.uniqueName] - amount);
 		instance.UpdateDebug();
+	}
+
+	private IEnumerator UpdateState()
+	{
+		if (GameMaster.instance.collectActivity.collectedGrapes.Count <= statesThresholds.x && (int) GameMaster.currentProgressionState >= (int) ActivitiesProgression.Stepping)
+		{
+			SetTooLittleGrapesState();
+		}
+		else if (GameMaster.instance.collectActivity.collectedGrapes.Count <= statesThresholds.y)
+		{
+			SetJustRightState();
+		}
+		else if ((int) GameMaster.currentProgressionState >= (int) ActivitiesProgression.Stepping)
+		{
+			SetTooManyGrapesState();
+		}
+
+		yield return new WaitForSeconds(stateCheckInterval);
+		StartCoroutine(UpdateState());
+	}
+
+	private void SetTooLittleGrapesState()
+	{
+		currentState = ResourcesState.TooLittleGrapes;
+
+		grapeSpawnMultiplier = 0.5f;
+		bunchSpawnMultiplier = 0.5f;
+
+		// Set default value for step multiplier
+		grapeStepMultiplier = 1f;
+	}
+
+	private void SetJustRightState()
+	{
+		currentState = ResourcesState.JustRight;
+
+		grapeSpawnMultiplier = 1f;
+		bunchSpawnMultiplier = 1f;
+
+		// Set default value for step multiplier
+		grapeStepMultiplier = 1f;
+	}
+
+	private void SetTooManyGrapesState()
+	{
+		currentState = ResourcesState.TooManyGrapes;
+
+		// Set default value for spawns multipliers
+		grapeSpawnMultiplier = 1f;
+		bunchSpawnMultiplier = 1f;
+
+		grapeStepMultiplier = 0.5f;
 	}
 
 	private void UpdateDebug()

@@ -4,9 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+public enum ActivitiesProgression { Collecting, Stepping, Bottling }
+
 public class GameMaster : Singleton<GameMaster> 
 {
 	public static bool isCounting = true;
+	public static ActivitiesProgression currentProgressionState;
 
 	public Image timerGauge;
 	public GameObject restartMessage;
@@ -28,6 +31,7 @@ public class GameMaster : Singleton<GameMaster>
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
 		isCounting = true;
+		currentProgressionState = ActivitiesProgression.Collecting;
 
 		danceMatActivity.gameObject.SetActive(false);
 		bottlingActivity.gameObject.SetActive(false);
@@ -44,7 +48,10 @@ public class GameMaster : Singleton<GameMaster>
 		}
 
 		if (!bottlingActivity.gameObject.activeSelf && ResourcesMaster.GetResourceAmount("juice") >= ResourcesMaster.GetResourceData("bottle").requiredToGeneratedRatio)
+		{
 			bottlingActivity.gameObject.SetActive(true);
+			currentProgressionState = ActivitiesProgression.Bottling;
+		}
 
 		if (Input.GetButtonDown("Reset"))
 		{
@@ -64,5 +71,13 @@ public class GameMaster : Singleton<GameMaster>
 		currentTime -= Time.deltaTime;
 		timerGauge.fillAmount = currentTime / maxTime;
 		timerGauge.color = Color.Lerp(timerEmptyColor, timerFullColor, currentTime / maxTime);
+	}
+
+	public static void FirstGrapeCollected()
+	{
+		if (currentProgressionState == ActivitiesProgression.Collecting)
+		{
+			currentProgressionState = ActivitiesProgression.Stepping;
+		}
 	}
 }
