@@ -39,6 +39,8 @@ public class BottlesResourcePool : MonoBehaviour
 		{
 			sfxAudioSource.PlayOneShot(bottlePopping);
 			bottles.Add(Instantiate<GameObject>(bottlePrefab, bottlesParent));
+			float color = FindObjectOfType<DanceMatActivity>().GetAverageColor();
+			ResourcesMaster.AddBottle(color);
 		}		
 	}
 }

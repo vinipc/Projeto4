@@ -26,6 +26,11 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 	public float grapesSpeed;
 	public float grapeStepMultiplier = 1f;
 
+	[Header("Wine qualities")]
+	public List<float> bottlesColors = new List<float>();
+	public float averageColor;
+	public float deviation;
+
 	[Header("Resource generation variables")]
 	public float resourcePerMicThreshold;
 
@@ -90,6 +95,27 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 		ResourceData resource = instance.resources.Find(res => res.uniqueName == name);
 		resourcePools[resource.uniqueName] = Mathf.Max(0f, resourcePools[resource.uniqueName] - amount);
 		instance.UpdateDebug();
+	}
+
+	public static void AddBottle(float color)
+	{
+		instance.averageColor = 0f;
+		instance.deviation = 0f;
+
+		instance.bottlesColors.Add(color);
+
+		for (int i = 0; i < instance.bottlesColors.Count; i++)
+		{
+			instance.averageColor += instance.bottlesColors[i] / (float) instance.bottlesColors.Count;
+		}
+
+		float accumulatedDeviation = 0f;
+		for (int i = 0; i < instance.bottlesColors.Count; i++)
+		{
+			accumulatedDeviation += Mathf.Pow(instance.bottlesColors[i] - instance.averageColor, 2f);
+		}
+		accumulatedDeviation /= (float) instance.bottlesColors.Count;
+		instance.deviation = Mathf.Sqrt(accumulatedDeviation);
 	}
 
 	private IEnumerator UpdateState()
