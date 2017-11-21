@@ -71,6 +71,26 @@ MonoBehaviour:
   beatsInterval: 0.4
   grapesSpeed: 3
   grapeStepMultiplier: 1
+  bottlesColors: []
+  averageColor: 0
+  deviation: 0
+  quantityThresholds: 0200000006000000
+  quantityDescriptions:
+  - extremamente raro
+  - relativamente comum
+  - muito popular
+  colorThresholds:
+  - 0.35
+  - 0.75
+  colorDescriptions:
+  - leve vinho branco
+  - vinho misto
+  - vinho tinto forte
+  deviationThresholds:
+  - 0.1
+  deviationDescriptions:
+  - com algumas surpresas
+  - bastante consistente
   resourcePerMicThreshold: 1
   grapeColorGradient:
     serializedVersion: 2

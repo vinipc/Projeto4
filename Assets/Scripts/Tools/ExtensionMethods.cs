@@ -28,6 +28,11 @@ public static class ExtensionMethods
 	{
 		return array[UnityEngine.Random.Range(0, array.Length)];
 	}
+
+	public static T GetLast<T>(this T[] array)
+	{
+		return array[array.Length - 1];
+	}
 	#endregion
 
 	#region SpriteRenderer

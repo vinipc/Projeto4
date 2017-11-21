@@ -12,7 +12,8 @@ public class GameMaster : Singleton<GameMaster>
 	public static ActivitiesProgression currentProgressionState;
 
 	public Image timerGauge;
-	public GameObject restartMessage;
+	public GameObject gameOverOverlay;
+	public Text descriptionDisplay;
 	public float maxTime;
 
 	public Color timerFullColor = Color.green; // Timer color when it's full
@@ -27,7 +28,7 @@ public class GameMaster : Singleton<GameMaster>
 
 	private void Awake()
 	{
-		restartMessage.SetActive(false);
+		gameOverOverlay.SetActive(false);
 		currentTime = maxTime;
 		timerGauge.transform.localScale = Vector3.one;
 		isCounting = true;
@@ -63,7 +64,15 @@ public class GameMaster : Singleton<GameMaster>
 	private void GameOver()
 	{
 		isCounting = false;
-		restartMessage.SetActive(true);
+		gameOverOverlay.SetActive(true);
+
+		string wineDescription = "Parabéns!\n\n Vocês produziram ";
+		wineDescription = string.Concat(wineDescription, ResourcesMaster.instance.bottlesColors.Count, 
+			" garrafas de um ", ResourcesMaster.GetColorDescription(),
+			", ", ResourcesMaster.GetDeviationDescription(), 
+			" e ", ResourcesMaster.GetQuantityDescription(), ".");
+
+		descriptionDisplay.text = wineDescription;
 	}
 
 	private void DecreaseTimer()
