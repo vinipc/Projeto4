@@ -53,14 +53,7 @@ public class MicrophoneCalibration : MonoBehaviour
 		// Hook event for device change handling
 		AudioSettings.OnAudioConfigurationChanged += OnAudioConfigurationChanged;
 
-		// Setup the microphone input stream
-		SetupMicrophoneInput();
-
-		// Sets up the required countdowns
-		Countdown.New(sampleInterval, CheckInput, null, true); // Sample countdown
-		ambientSampleCountdown = Countdown.New(AMBIENT_MEASURE_DURATION, CalculatedAmbientVolume, UpdateCountdownDisplay, false, "Ambient sample countdown");
-
-		messageDisplay.text = "Por favor, fique em silêncio por 5 segundos para detecção do volume do ambiente.";
+		StartCoroutine(SetUpCoroutine());
 	}
 
 	private void Update()
@@ -75,6 +68,22 @@ public class MicrophoneCalibration : MonoBehaviour
 			Debug.Log("Ambient volume: " + ambientVolume + "\nMax volume: " + maxVolume + "\nClap volume: " + clapVolume);
 			UnityEngine.SceneManagement.SceneManager.LoadScene("CalibrationChecker");
 		}
+	}
+
+	private IEnumerator SetUpCoroutine()
+	{
+		messageDisplay.text = "Não encontramos um microfone. Conecte um para continuar.";
+		while (Microphone.devices.Length == 0)
+			yield return new WaitForSeconds(1f);
+
+		// Setup the microphone input stream
+		SetupMicrophoneInput();
+
+		// Sets up the required countdowns
+		Countdown.New(sampleInterval, CheckInput, null, true); // Sample countdown
+		ambientSampleCountdown = Countdown.New(AMBIENT_MEASURE_DURATION, CalculatedAmbientVolume, UpdateCountdownDisplay, false, "Ambient sample countdown");
+
+		messageDisplay.text = "Por favor, fique em silêncio por 5 segundos para detecção do volume do ambiente.";
 	}
 
 	private void CheckInput()

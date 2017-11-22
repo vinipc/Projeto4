@@ -123,7 +123,6 @@ GameObject:
   - component: {fileID: 224425913857738532}
   - component: {fileID: 222077149377556318}
   - component: {fileID: 114577445203406432}
-  - component: {fileID: 223168967953135662}
   m_Layer: 0
   m_Name: Panel
   m_TagString: Untagged
@@ -802,6 +801,7 @@ MonoBehaviour:
   grapeSpawnCenter: {fileID: 4416095022475240}
   paddleRigidbody: {fileID: 50497769739928106}
   paddleTorque: 1200
+  collectedGrapes: []
 --- !u!114 &114421202545266254
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1261,26 +1261,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1035921320067608}
---- !u!223 &223168967953135662
-Canvas:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1334361970075918}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 2
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 1
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 985878605
-  m_SortingOrder: 0
-  m_TargetDisplay: 0
 --- !u!223 &223224925452985304
 Canvas:
   m_ObjectHideFlags: 1
@@ -1299,7 +1279,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &224425913857738532
 RectTransform:

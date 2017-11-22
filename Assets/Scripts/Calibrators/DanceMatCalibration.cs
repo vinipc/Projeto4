@@ -31,7 +31,7 @@ public class DanceMatCalibration : MonoBehaviour
 			countdown -= Time.deltaTime;
 			if (countdown <= 0f)
 			{
-				messageDisplay.text = "Aperte a seta para cima";
+				messageDisplay.text = "Aperte a seta para cima no tapete de dança";
 				StartCoroutine(CalibrateKeys());
 			}
 		}
@@ -60,13 +60,13 @@ public class DanceMatCalibration : MonoBehaviour
 			switch (currentCalibratedButton)
 			{
 			case DanceMatInput.Up:
-				messageDisplay.text = "Aperte a seta para baixo";
+				messageDisplay.text = "Agora aperte a seta para baixo";
 				break;
 			case DanceMatInput.Down:
-				messageDisplay.text = "Aperte a seta para esquerda";
+				messageDisplay.text = "Aperte para esquerda";
 				break;
 			case DanceMatInput.Left:
-				messageDisplay.text = "Aperte a seta para direita";
+				messageDisplay.text = "E para direita";
 				break;
 			case DanceMatInput.Right:
 				messageDisplay.text = "Aperte X";

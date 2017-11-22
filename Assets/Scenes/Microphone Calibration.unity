@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 513189157}
   - component: {fileID: 513189158}
   m_Layer: 5
-  m_Name: Volume History Display
+  m_Name: Mic calibration
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
