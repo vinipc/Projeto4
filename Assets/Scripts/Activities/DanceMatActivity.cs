@@ -75,6 +75,9 @@ public class DanceMatActivity : Activity
 
 	private void SpawnGrape()
 	{
+		float interval = ResourcesMaster.instance.beatsInterval * ResourcesMaster.instance.grapeStepMultiplier;		
+		Countdown.New(interval, SpawnGrape);
+
 		if (grapeColorsPool.Count == 0)
 			return;
 
@@ -86,7 +89,6 @@ public class DanceMatActivity : Activity
 		fallingGrapes.Add(newGrape);
 		grapeColorsPool.Remove(grapeColor);
 
-		float interval = ResourcesMaster.instance.beatsInterval * ResourcesMaster.instance.grapeStepMultiplier;
 		Countdown.New(interval, SpawnGrape);
 	}
 
@@ -99,11 +101,6 @@ public class DanceMatActivity : Activity
 		}
 		
 		grapeColorsPool.Add(grape.colorSpectrumValue);
-	}
-
-	private void StepOnGrape(Grape steppedGrape)
-	{
-		GameMaster.instance.collectActivity.RemoveGrapeByColor(steppedGrape.colorSpectrumValue);
 	}
 
 	private void CheckInput()
@@ -127,8 +124,6 @@ public class DanceMatActivity : Activity
 				if ((closestGrape.transform.position - target.position).sqrMagnitude < hitRadius * hitRadius)
 				{
 					audioSource.PlayOneShot(grapeSquashing);
-					fallingGrapes.Remove(closestGrape);
-					Destroy(closestGrape.gameObject);
 					float resourcePerTap = ResourcesMaster.instance.resourcesPerTap;
 					ResourcesMaster.AddResource(generatedResourceName, resourcePerTap);
 
