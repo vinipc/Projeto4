@@ -8,6 +8,7 @@ public enum ActivitiesProgression { Collecting, Stepping, Bottling }
 
 public class GameMaster : Singleton<GameMaster> 
 {
+	public static string MAIN_MENU_NAME = "Main Menu";
 	public static bool isCounting = true;
 	public static ActivitiesProgression currentProgressionState;
 
@@ -23,8 +24,10 @@ public class GameMaster : Singleton<GameMaster>
 	public GrapesActivity collectActivity;
 	public DanceMatActivity danceMatActivity;
 	public MicrophoneActivity bottlingActivity;
+	public GameObject pauseMenu;
 
 	private float currentTime;
+	private bool isPaused = false;
 
 	private void Awake()
 	{
@@ -59,6 +62,36 @@ public class GameMaster : Singleton<GameMaster>
 			System.GC.Collect();
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
+		else if (Input.GetButtonDown("Pause"))
+		{
+			if (isPaused)
+				ClosePauseMenu();
+			else
+				OpenPauseMenu();
+		}
+	}
+
+	private void OpenPauseMenu()
+	{
+		isPaused = true;
+		isCounting = false;
+
+		pauseMenu.SetActive(true);
+	}
+
+	public void ClosePauseMenu()
+	{
+		Debug.Log("Close pause menu");
+		isPaused = false;
+		isCounting = true;
+
+		pauseMenu.SetActive(false);
+	}
+
+	public void MenuButtonPressed()
+	{
+		Debug.Log("Load menu");
+		SceneManager.LoadScene(MAIN_MENU_NAME);
 	}
 
 	private void GameOver()
