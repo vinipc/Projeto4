@@ -88,8 +88,6 @@ public class DanceMatActivity : Activity
 
 		fallingGrapes.Add(newGrape);
 		grapeColorsPool.Remove(grapeColor);
-
-		Countdown.New(interval, SpawnGrape);
 	}
 
 	public void AddCollectedGrape(Grape grape)
