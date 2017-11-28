@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
 	public const string CALIBRATION_SCENE_NAME = "CalibrationChecker";
+	public const string CREDITS_SCENE_NAME = "Credits";
 
 	public void PlayButtonPressed()
 	{
@@ -17,6 +18,11 @@ public class MainMenu : MonoBehaviour
 		DanceMatInputManager.isInitialized = false;
 		MicrophoneActivity.isCalibrated = false;
 		SceneManager.LoadScene(CALIBRATION_SCENE_NAME);
+	}
+
+	public void CreditsButtonPressed()
+	{
+		SceneManager.LoadScene(CREDITS_SCENE_NAME);
 	}
 
 	public void QuitButtonPressed()
