@@ -489,7 +489,8 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Time:\n\nGabriel Balarin\nHeitor Mattosinho\nPablo Victor\nVin\xEDcius
-    Pimentel\n\n\nCom trilha sonora por:\n\nB\xE1rbara Ester\nbarbaraestermotta@hotmail.com<size=30>\nsoundcloud.com/barbara-ester-426853578</size>"
+    Pimentel\n\n\n\"Fiddles McGinty\" por:\nKevin MacLeod (incompetech.com)\r\n<size=30>\nLicensed
+    under Creative Commons: By Attribution 3.0 License\r\nhttp://creativecommons.org/licenses/by/3.0/\n</size>"
 --- !u!222 &1213839757
 CanvasRenderer:
   m_ObjectHideFlags: 0

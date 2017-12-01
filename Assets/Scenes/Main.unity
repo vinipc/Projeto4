@@ -618,7 +618,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableBGMs:
   - {fileID: 8300000, guid: 2449798b55e0f90478a73f680acb662e, type: 3}
-  - {fileID: 8300000, guid: ec204277e4a213a49b811e5c46523cde, type: 3}
 --- !u!1 &1344493811
 GameObject:
   m_ObjectHideFlags: 0
