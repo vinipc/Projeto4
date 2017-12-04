@@ -8,6 +8,19 @@ public enum ActivitiesProgression { Collecting, Stepping, Bottling }
 
 public class GameMaster : Singleton<GameMaster> 
 {
+	#region Twitter stuff
+	string CONSUMER_KEY = "PfF09E6UP2D8dgWZyMAReCjpt";
+	string CONSUMER_SECRET = "MToeBjBAfQum3153YKuyu5xZM9vetbHzkfCyRlbPqBIrn5KbNr";
+
+	string VINICOLA_USER_TOKEN_SECRET = "6JOiinuqz933ArRTs2gs9Q2INOF2nFpRItyB5puvoCLXj";
+	string VINICOLA_USER_TOKEN = "933838789381967873-kuSLhGPNWnewK0u4n3yvjHyDpSlOVqG";
+	private string VINICOLA_USER_ID = "933838789381967873";
+	private string VINICOLA_USER_SCREEN_NAME = "VinicoLouca";
+
+	Twitter.RequestTokenResponse m_RequestTokenResponse;
+	Twitter.AccessTokenResponse m_AccessTokenResponse;
+	#endregion
+
 	public static string MAIN_MENU_NAME = "Main Menu";
 	public static bool isCounting = true;
 	public static ActivitiesProgression currentProgressionState;
@@ -39,6 +52,8 @@ public class GameMaster : Singleton<GameMaster>
 
 		danceMatActivity.gameObject.SetActive(false);
 		bottlingActivity.gameObject.SetActive(false);
+
+		LoadTwitterUserInfo();
 	}
 
 	private void Update()
@@ -99,13 +114,15 @@ public class GameMaster : Singleton<GameMaster>
 		isCounting = false;
 		gameOverOverlay.SetActive(true);
 
-		string wineDescription = "Parabéns!\n\n Vocês produziram ";
-		wineDescription = string.Concat(wineDescription, ResourcesMaster.instance.bottlesColors.Count, 
+		string wineDescription = string.Concat(ResourcesMaster.instance.bottlesColors.Count, 
 			" garrafas de um ", ResourcesMaster.GetColorDescription(),
 			", ", ResourcesMaster.GetDeviationDescription(), 
 			" e ", ResourcesMaster.GetQuantityDescription(), ".");
 
-		descriptionDisplay.text = wineDescription;
+		descriptionDisplay.text = string.Concat("Parabéns!\n\nVocês produziram ", wineDescription);
+		string tweet = string.Concat("Acabaram de produzir ", wineDescription);
+
+		StartCoroutine(Twitter.API.PostTweet(tweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse, new Twitter.PostTweetCallback(this.OnPostTweet)));
 	}
 
 	private void DecreaseTimer()
@@ -121,5 +138,33 @@ public class GameMaster : Singleton<GameMaster>
 		{
 			currentProgressionState = ActivitiesProgression.Stepping;
 		}
+	}
+
+	private void LoadTwitterUserInfo()
+	{
+		m_AccessTokenResponse = new Twitter.AccessTokenResponse();
+
+		m_AccessTokenResponse.UserId = VINICOLA_USER_ID;
+		m_AccessTokenResponse.ScreenName = VINICOLA_USER_SCREEN_NAME;
+		m_AccessTokenResponse.Token = VINICOLA_USER_TOKEN;
+		m_AccessTokenResponse.TokenSecret = VINICOLA_USER_TOKEN_SECRET;
+
+		if (!string.IsNullOrEmpty(m_AccessTokenResponse.Token) &&
+			!string.IsNullOrEmpty(m_AccessTokenResponse.ScreenName) &&
+			!string.IsNullOrEmpty(m_AccessTokenResponse.Token) &&
+			!string.IsNullOrEmpty(m_AccessTokenResponse.TokenSecret))
+		{
+			string log = "LoadTwitterUserInfo - succeeded";
+			log += "\n    UserId : " + m_AccessTokenResponse.UserId;
+			log += "\n    ScreenName : " + m_AccessTokenResponse.ScreenName;
+			log += "\n    Token : " + m_AccessTokenResponse.Token;
+			log += "\n    TokenSecret : " + m_AccessTokenResponse.TokenSecret;
+			Debug.Log(log);
+		}
+	}
+
+	private void OnPostTweet(bool success)
+	{
+		Debug.Log("OnPostTweet - " + (success ? "succedded." : "failed."));
 	}
 }
