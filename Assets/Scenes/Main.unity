@@ -442,6 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2484aeee1c8f95149b5e70aa1fe410f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wineInfos: []
   timerGauge: {fileID: 1479125429}
   gameOverOverlay: {fileID: 2089698261}
   descriptionDisplay: {fileID: 1638138689}

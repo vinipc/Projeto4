@@ -128,50 +128,65 @@ public class ResourcesMaster : Singleton<ResourcesMaster>
 
 	public static string GetQuantityDescription()
 	{
-		int count = instance.bottlesColors.Count;
-
-		if (count < instance.quantityThresholds[0])
-			return instance.quantityDescriptions[0];
-
-		for (int i = 1; i < instance.quantityThresholds.Length; i++)
-		{
-			if (instance.quantityThresholds[i - 1] <= count && count < instance.quantityThresholds[i])
-				return instance.quantityDescriptions[i];
-		}
-
-		return instance.quantityDescriptions.GetLast();
+		return instance.quantityDescriptions[GetQuantityIndex()];
 	}
 
 	public static string GetColorDescription()
 	{
-		float average = instance.averageColor;
-
-		if (average < instance.colorThresholds[0])
-			return instance.colorDescriptions[0];
-
-		for (int i = 1; i < instance.quantityThresholds.Length; i++)
-		{
-			if (instance.colorThresholds[i - 1] <= average && average < instance.colorThresholds[i])
-				return instance.colorDescriptions[i];
-		}
-
-		return instance.colorDescriptions.GetLast();
+		return instance.colorDescriptions[GetColorIndex()];
 	}
 
 	public static string GetDeviationDescription()
 	{
+		return instance.deviationDescriptions[GetDeviationIndex()];
+	}
+
+	public static int GetQuantityIndex()
+	{
+		int count = instance.bottlesColors.Count;
+
+		if (count < instance.quantityThresholds[0])
+			return 0;
+
+		for (int i = 1; i < instance.quantityThresholds.Length; i++)
+		{
+			if (instance.quantityThresholds[i - 1] <= count && count < instance.quantityThresholds[i])
+				return i;
+		}
+
+		return instance.quantityThresholds.Length;
+	}
+
+	public static int GetColorIndex()
+	{
+		float average = instance.averageColor;
+
+		if (average < instance.colorThresholds[0])
+			return 0;
+
+		for (int i = 1; i < instance.quantityThresholds.Length; i++)
+		{
+			if (instance.colorThresholds[i - 1] <= average && average < instance.colorThresholds[i])
+				return i;
+		}
+
+		return instance.colorThresholds.Length;
+	}
+
+	public static int GetDeviationIndex()
+	{
 		float deviation = instance.deviation;
 
 		if (deviation < instance.deviationThresholds[0])
-			return instance.deviationDescriptions[0];
+			return 0;
 
 		for (int i = 1; i < instance.deviationThresholds.Length; i++)
 		{
 			if (instance.deviationThresholds[i - 1] <= deviation && deviation < instance.deviationThresholds[i])
-				return instance.deviationDescriptions[i];
+				return i;
 		}
 
-		return instance.deviationDescriptions.GetLast();
+		return instance.deviationThresholds.Length;
 	}
 
 	private IEnumerator UpdateState()

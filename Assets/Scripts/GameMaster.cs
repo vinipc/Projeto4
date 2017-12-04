@@ -8,7 +8,7 @@ public enum ActivitiesProgression { Collecting, Stepping, Bottling }
 
 public class GameMaster : Singleton<GameMaster> 
 {
-	#region Twitter stuff
+	#region Twitter vars
 	string CONSUMER_KEY = "PfF09E6UP2D8dgWZyMAReCjpt";
 	string CONSUMER_SECRET = "MToeBjBAfQum3153YKuyu5xZM9vetbHzkfCyRlbPqBIrn5KbNr";
 
@@ -19,6 +19,14 @@ public class GameMaster : Singleton<GameMaster>
 
 	Twitter.RequestTokenResponse m_RequestTokenResponse;
 	Twitter.AccessTokenResponse m_AccessTokenResponse;
+	#endregion
+
+	#region GoogleSpreadsheet vars
+	private const string TABLE_NAME = "Wines";
+	private const string ID_FIELD_NAME = "id";
+	private const string QUANTITY_FIELD_NAME = "quantity";
+
+	public List<WineInfo> wineInfos = new List<WineInfo>();
 	#endregion
 
 	public static string MAIN_MENU_NAME = "Main Menu";
@@ -53,6 +61,9 @@ public class GameMaster : Singleton<GameMaster>
 		danceMatActivity.gameObject.SetActive(false);
 		bottlingActivity.gameObject.SetActive(false);
 
+		CloudConnectorCore.processedResponseCallback.RemoveAllListeners();
+		CloudConnectorCore.processedResponseCallback.AddListener(this.ParseData);
+		LoadWineQuantities();
 		LoadTwitterUserInfo();
 	}
 
@@ -114,12 +125,19 @@ public class GameMaster : Singleton<GameMaster>
 		isCounting = false;
 		gameOverOverlay.SetActive(true);
 
+		int wineIndex = GetWineIndex();
+		float percentage;
+		AddWine(wineIndex);
+
+		percentage = 100f * ((float) wineInfos[wineIndex].quantity) / GetTotalWinesMade();
+		string percentString = percentage.ToString("##.#");
+
 		string wineDescription = string.Concat(ResourcesMaster.instance.bottlesColors.Count, 
 			" garrafas de um ", ResourcesMaster.GetColorDescription(),
 			", ", ResourcesMaster.GetDeviationDescription(), 
-			" e ", ResourcesMaster.GetQuantityDescription(), ".");
+			" e ", ResourcesMaster.GetQuantityDescription());
 
-		descriptionDisplay.text = string.Concat("Parabéns!\n\nVocês produziram ", wineDescription);
+		descriptionDisplay.text = string.Concat("Parabéns!\n\nVocês produziram ", wineDescription, ", como ", percentString, "% dos vinhos produzidos");
 		string tweet = string.Concat("Acabaram de produzir ", wineDescription);
 
 		StartCoroutine(Twitter.API.PostTweet(tweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse, new Twitter.PostTweetCallback(this.OnPostTweet)));
@@ -140,6 +158,65 @@ public class GameMaster : Singleton<GameMaster>
 		}
 	}
 
+	private float GetTotalWinesMade()
+	{
+		int total = 0;
+		for (int i = 0; i < wineInfos.Count; i++)
+		{
+			total += wineInfos[i].quantity;
+		}
+
+		return (float) total;
+	}
+
+	private int GetWineIndex()
+	{
+		int quantityIndex = ResourcesMaster.GetQuantityIndex();
+		int colorIndex = ResourcesMaster.GetColorIndex();
+		int deviationIndex = ResourcesMaster.GetDeviationIndex();
+
+		if (quantityIndex == 0 && colorIndex == 0 && deviationIndex == 0)
+			return 0;
+		else if (quantityIndex == 0 && colorIndex == 0 && deviationIndex == 1)
+			return 1;
+		else if (quantityIndex == 0 && colorIndex == 1 && deviationIndex == 0)
+			return 2;
+		else if (quantityIndex == 0 && colorIndex == 1 && deviationIndex == 1)
+			return 3;
+		else if (quantityIndex == 0 && colorIndex == 2 && deviationIndex == 0)
+			return 4;
+		else if (quantityIndex == 0 && colorIndex == 2 && deviationIndex == 1)
+			return 5;
+		else if (quantityIndex == 1 && colorIndex == 0 && deviationIndex == 0)
+			return 6;
+		else if (quantityIndex == 1 && colorIndex == 0 && deviationIndex == 1)
+			return 7;
+		else if (quantityIndex == 1 && colorIndex == 1 && deviationIndex == 0)
+			return 8;
+		else if (quantityIndex == 1 && colorIndex == 1 && deviationIndex == 1)
+			return 9;
+		else if (quantityIndex == 1 && colorIndex == 2 && deviationIndex == 0)
+			return 10;
+		else if (quantityIndex == 1 && colorIndex == 2 && deviationIndex == 1)
+			return 11;
+		else if (quantityIndex == 2 && colorIndex == 0 && deviationIndex == 0)
+			return 12;
+		else if (quantityIndex == 2 && colorIndex == 0 && deviationIndex == 1)
+			return 13;
+		else if (quantityIndex == 2 && colorIndex == 1 && deviationIndex == 0)
+			return 14;
+		else if (quantityIndex == 2 && colorIndex == 1 && deviationIndex == 1)
+			return 15;
+		else if (quantityIndex == 2 && colorIndex == 2 && deviationIndex == 0)
+			return 16;
+		else if (quantityIndex == 2 && colorIndex == 2 && deviationIndex == 1)
+			return 17;
+
+		Debug.Log("SHOULD NOT BE HERE!");
+		return 17;
+	}
+
+	#region Twitter functions
 	private void LoadTwitterUserInfo()
 	{
 		m_AccessTokenResponse = new Twitter.AccessTokenResponse();
@@ -166,5 +243,65 @@ public class GameMaster : Singleton<GameMaster>
 	private void OnPostTweet(bool success)
 	{
 		Debug.Log("OnPostTweet - " + (success ? "succedded." : "failed."));
+	}
+	#endregion
+
+	#region Google Spreadhseet functions
+	public void AddWine(int index)
+	{
+		WineInfo info = wineInfos.Find(i => i.id == index);
+		info.quantity++;
+		CloudConnectorCore.UpdateObjects(TABLE_NAME, ID_FIELD_NAME, info.id.ToString(), QUANTITY_FIELD_NAME, info.quantity.ToString());
+	}
+
+	[ContextMenu("Retrieve data")]
+	public void LoadWineQuantities()
+	{
+		CloudConnectorCore.GetTable(TABLE_NAME);
+	}
+
+	public void ParseData(CloudConnectorCore.QueryType query, List<string> objTypeNames, List<string> jsonData)
+	{
+		if (query == CloudConnectorCore.QueryType.getTable)
+		{
+			wineInfos.Clear();
+			WineInfo[] wines = GSFUJsonHelper.JsonArray<WineInfo>(jsonData[0]);
+			for (int i = 0; i < wines.Length; i++)
+			{
+				wineInfos.Add(wines[i]);
+			}
+		}
+	}
+	#endregion
+}
+
+[System.Serializable]
+public class WineInfo
+{
+	public int id;
+	public int quantity;
+
+	public WineInfo(int id, int quantity)
+	{
+		this.id = id;
+		this.quantity = quantity;
+	}
+}
+
+// Helper class: because UnityEngine.JsonUtility does not support deserializing an array...
+// http://forum.unity3d.com/threads/how-to-load-an-array-with-jsonutility.375735/
+public class GSFUJsonHelper
+{
+	public static T[] JsonArray<T>(string json)
+	{
+		string newJson = "{ \"array\": " + json + "}";
+		Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(newJson);
+		return wrapper.array;
+	}
+
+	[System.Serializable]
+	private class Wrapper<T>
+	{
+		public T[] array = new T[] { };
 	}
 }

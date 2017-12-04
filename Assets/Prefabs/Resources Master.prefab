@@ -89,8 +89,8 @@ MonoBehaviour:
   deviationThresholds:
   - 0.1
   deviationDescriptions:
-  - com algumas surpresas
   - bastante consistente
+  - com algumas surpresas
   resourcePerMicThreshold: 1
   grapeColorGradient:
     serializedVersion: 2
