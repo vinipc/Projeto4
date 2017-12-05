@@ -8,7 +8,10 @@ public enum ActivitiesProgression { Collecting, Stepping, Bottling }
 
 public class GameMaster : Singleton<GameMaster> 
 {
-	private bool USE_SPREADSHEET = false;
+	// Pra usar o node: star essas duas variáveis pra False.
+	// Se não for usar o node, pelo menos uma delas tem q ser true @Heitor
+	private bool USE_SPREADSHEET = false; 
+	private bool USE_PHP = true;
 
 	#region Twitter vars
 	string CONSUMER_KEY = "PfF09E6UP2D8dgWZyMAReCjpt";
@@ -27,10 +30,12 @@ public class GameMaster : Singleton<GameMaster>
 	private const string TABLE_NAME = "Wines";
 	private const string ID_FIELD_NAME = "id";
 	private const string QUANTITY_FIELD_NAME = "quantity";
-	private const string SERVER_URL = "http://vinicolouca.000webhostapp.com/";
+	private const string WEBHOST_URL = "http://vinicolouca.000webhostapp.com/";
+	private const string HEROKU_URL = " "; // Botar o endereço do server do Heroku @Heitor
 
 	public List<WineInfo> wineInfos = new List<WineInfo>();
-	public List<int> wineQuantities = new List<int>();
+	public List<int> wineQuantitiesFromWebhost = new List<int>();
+	public List<int> wineQuantitiesFromHeroku = new List<int>();
 	#endregion
 
 	public static string MAIN_MENU_NAME = "Main Menu";
@@ -136,8 +141,10 @@ public class GameMaster : Singleton<GameMaster>
 
 		if (USE_SPREADSHEET)
 			percentage = 100f * ((float) wineInfos[wineIndex].quantity) / (float) GetTotalWinesMade();
+		else if (USE_PHP)
+			percentage = 100f * ((float) wineQuantitiesFromWebhost[wineIndex] / (float) GetTotalWinesMade());
 		else
-			percentage = 100f * ((float) wineQuantities[wineIndex] / (float) GetTotalWinesMade());
+			percentage = 100f * ((float) wineQuantitiesFromHeroku[wineIndex] / (float) GetTotalWinesMade());
 
 		string percentString = percentage.ToString("##.#");
 
@@ -179,9 +186,13 @@ public class GameMaster : Singleton<GameMaster>
 			
 			return total;			
 		}
+		else if (USE_PHP)
+		{
+			return wineQuantitiesFromWebhost.Sum<int>();
+		}
 		else
 		{
-			return wineQuantities.Sum<int>();
+			return wineQuantitiesFromHeroku.Sum<int>();
 		}
 	}
 
@@ -265,33 +276,42 @@ public class GameMaster : Singleton<GameMaster>
 	#region Internal API functions
 	public IEnumerator AddWine(int index)
 	{
+		// Atualizar spreadsheet:
 		WineInfo info = wineInfos.Find(i => i.id == index);
 		info.quantity++;
-
 		CloudConnectorCore.UpdateObjects(TABLE_NAME, ID_FIELD_NAME, info.id.ToString(), QUANTITY_FIELD_NAME, info.quantity.ToString());
 
-		wineQuantities[index]++;
-		WWW www = new WWW(SERVER_URL + "addWine.php?id=" + index.ToString());
+		// Atualiza server no webhost por php:
+		wineQuantitiesFromWebhost[index]++;
+		WWW www = new WWW(WEBHOST_URL + "addWine.php?id=" + index.ToString());
 		while (!www.isDone)
 		{
-			yield return 0;
+			yield return 0;			
 		}
+
+		// Atualizar server no heroku por node.js: @Heitor
 	}
 
 	public IEnumerator LoadWineQuantities()
 	{
 		CloudConnectorCore.GetTable(TABLE_NAME);
 
-		wineQuantities = new List<int>();
+		wineQuantitiesFromWebhost = new List<int>();
+		wineQuantitiesFromHeroku = new List<int>();
 		for (int i = 0; i < 17; i++)
 		{
-			WWW www = new WWW(SERVER_URL + "getWineQuantity.php?id=" + i.ToString());
+			WWW www = new WWW(WEBHOST_URL + "getWineQuantity.php?id=" + i.ToString());
 			while (!www.isDone)
-				yield return 0;
-			wineQuantities.Add(int.Parse(www.text));
+			{
+				yield return 0;				
+			}
+			wineQuantitiesFromWebhost.Add(int.Parse(www.text));
+
+			// Inserir chamada pro getWineQuantity do node por aqui @Heitor
 		}
 	}
 
+	// Usado só pelo esquema com Spreadsheet
 	public void ParseData(CloudConnectorCore.QueryType query, List<string> objTypeNames, List<string> jsonData)
 	{
 		if (query == CloudConnectorCore.QueryType.getTable)
