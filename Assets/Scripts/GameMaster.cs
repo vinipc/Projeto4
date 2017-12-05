@@ -8,6 +8,8 @@ public enum ActivitiesProgression { Collecting, Stepping, Bottling }
 
 public class GameMaster : Singleton<GameMaster> 
 {
+	private bool USE_SPREADSHEET = false;
+
 	#region Twitter vars
 	string CONSUMER_KEY = "PfF09E6UP2D8dgWZyMAReCjpt";
 	string CONSUMER_SECRET = "MToeBjBAfQum3153YKuyu5xZM9vetbHzkfCyRlbPqBIrn5KbNr";
@@ -25,8 +27,10 @@ public class GameMaster : Singleton<GameMaster>
 	private const string TABLE_NAME = "Wines";
 	private const string ID_FIELD_NAME = "id";
 	private const string QUANTITY_FIELD_NAME = "quantity";
+	private const string SERVER_URL = "http://vinicolouca.000webhostapp.com/";
 
 	public List<WineInfo> wineInfos = new List<WineInfo>();
+	public List<int> wineQuantities = new List<int>();
 	#endregion
 
 	public static string MAIN_MENU_NAME = "Main Menu";
@@ -63,7 +67,7 @@ public class GameMaster : Singleton<GameMaster>
 
 		CloudConnectorCore.processedResponseCallback.RemoveAllListeners();
 		CloudConnectorCore.processedResponseCallback.AddListener(this.ParseData);
-		LoadWineQuantities();
+		StartCoroutine(LoadWineQuantities());
 		LoadTwitterUserInfo();
 	}
 
@@ -126,10 +130,15 @@ public class GameMaster : Singleton<GameMaster>
 		gameOverOverlay.SetActive(true);
 
 		int wineIndex = GetWineIndex();
-		float percentage;
-		AddWine(wineIndex);
 
-		percentage = 100f * ((float) wineInfos[wineIndex].quantity) / GetTotalWinesMade();
+		float percentage;
+		StartCoroutine(AddWine(wineIndex));
+
+		if (USE_SPREADSHEET)
+			percentage = 100f * ((float) wineInfos[wineIndex].quantity) / (float) GetTotalWinesMade();
+		else
+			percentage = 100f * ((float) wineQuantities[wineIndex] / (float) GetTotalWinesMade());
+
 		string percentString = percentage.ToString("##.#");
 
 		string wineDescription = string.Concat(ResourcesMaster.instance.bottlesColors.Count, 
@@ -138,7 +147,7 @@ public class GameMaster : Singleton<GameMaster>
 			" e ", ResourcesMaster.GetQuantityDescription());
 
 		descriptionDisplay.text = string.Concat("Parabéns!\n\nVocês produziram ", wineDescription, ", como ", percentString, "% dos vinhos produzidos");
-		string tweet = string.Concat("Acabaram de produzir ", wineDescription);
+		string tweet = string.Concat("Acabaram de produzir ", wineDescription, ". ", GetTotalWinesMade().ToString(), " vinhos já foram produzidos!");
 
 		StartCoroutine(Twitter.API.PostTweet(tweet, CONSUMER_KEY, CONSUMER_SECRET, m_AccessTokenResponse, new Twitter.PostTweetCallback(this.OnPostTweet)));
 	}
@@ -158,15 +167,22 @@ public class GameMaster : Singleton<GameMaster>
 		}
 	}
 
-	private float GetTotalWinesMade()
+	private int GetTotalWinesMade()
 	{
-		int total = 0;
-		for (int i = 0; i < wineInfos.Count; i++)
+		if (USE_SPREADSHEET)
 		{
-			total += wineInfos[i].quantity;
+			int total = 0;
+			for (int i = 0; i < wineInfos.Count; i++)
+			{
+				total += wineInfos[i].quantity;
+			}
+			
+			return total;			
 		}
-
-		return (float) total;
+		else
+		{
+			return wineQuantities.Sum<int>();
+		}
 	}
 
 	private int GetWineIndex()
@@ -246,18 +262,34 @@ public class GameMaster : Singleton<GameMaster>
 	}
 	#endregion
 
-	#region Google Spreadhseet functions
-	public void AddWine(int index)
+	#region Internal API functions
+	public IEnumerator AddWine(int index)
 	{
 		WineInfo info = wineInfos.Find(i => i.id == index);
 		info.quantity++;
+
 		CloudConnectorCore.UpdateObjects(TABLE_NAME, ID_FIELD_NAME, info.id.ToString(), QUANTITY_FIELD_NAME, info.quantity.ToString());
+
+		wineQuantities[index]++;
+		WWW www = new WWW(SERVER_URL + "addWine.php?id=" + index.ToString());
+		while (!www.isDone)
+		{
+			yield return 0;
+		}
 	}
 
-	[ContextMenu("Retrieve data")]
-	public void LoadWineQuantities()
+	public IEnumerator LoadWineQuantities()
 	{
 		CloudConnectorCore.GetTable(TABLE_NAME);
+
+		wineQuantities = new List<int>();
+		for (int i = 0; i < 17; i++)
+		{
+			WWW www = new WWW(SERVER_URL + "getWineQuantity.php?id=" + i.ToString());
+			while (!www.isDone)
+				yield return 0;
+			wineQuantities.Add(int.Parse(www.text));
+		}
 	}
 
 	public void ParseData(CloudConnectorCore.QueryType query, List<string> objTypeNames, List<string> jsonData)

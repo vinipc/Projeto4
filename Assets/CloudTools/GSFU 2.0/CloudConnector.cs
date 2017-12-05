@@ -22,7 +22,7 @@ public class CloudConnector : MonoBehaviour
 			if (_Instance == null)
 			{
 				_Instance = new GameObject("CloudConnector").AddComponent<CloudConnector>();
-				DontDestroyOnLoad(_Instance);				
+				DontDestroyOnLoad(_Instance);
 			}
 			return _Instance;
 		}

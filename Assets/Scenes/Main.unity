@@ -443,6 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wineInfos: []
+  wineQuantities: 
   timerGauge: {fileID: 1479125429}
   gameOverOverlay: {fileID: 2089698261}
   descriptionDisplay: {fileID: 1638138689}

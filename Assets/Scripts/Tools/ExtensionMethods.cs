@@ -21,6 +21,15 @@ public static class ExtensionMethods
 	{
 		return list.Count > 0 ? list[UnityEngine.Random.Range(0, list.Count)] : default(T);
 	}
+
+	public static int Sum<T>(this List<int> list)
+	{
+		int total = 0;
+		for (int i = 0; i < list.Count; i++)
+			total += list[i];
+
+		return total;
+	}
 	#endregion
 
 	#region Built-in Array
