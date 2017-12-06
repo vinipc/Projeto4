@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Text.RegularExpressions;
 
 public enum ActivitiesProgression { Collecting, Stepping, Bottling }
 
@@ -31,7 +32,7 @@ public class GameMaster : Singleton<GameMaster>
 	private const string ID_FIELD_NAME = "id";
 	private const string QUANTITY_FIELD_NAME = "quantity";
 	private const string WEBHOST_URL = "http://vinicolouca.000webhostapp.com/";
-	private const string HEROKU_URL = " "; // Botar o endereço do server do Heroku @Heitor
+	private const string HEROKU_URL = "localhost:3000/vinicolouca/"; // Botar o endereço do server do Heroku @Heitor
 
 	public List<WineInfo> wineInfos = new List<WineInfo>();
 	public List<int> wineQuantitiesFromWebhost = new List<int>();
@@ -174,7 +175,8 @@ public class GameMaster : Singleton<GameMaster>
 		}
 	}
 
-	private int GetTotalWinesMade()
+	private int 
+        GetTotalWinesMade()
 	{
 		if (USE_SPREADSHEET)
 		{
@@ -192,7 +194,9 @@ public class GameMaster : Singleton<GameMaster>
 		}
 		else
 		{
+            print(wineQuantitiesFromHeroku.Sum<int>()+" heroku soma");
 			return wineQuantitiesFromHeroku.Sum<int>();
+           
 		}
 	}
 
@@ -289,8 +293,13 @@ public class GameMaster : Singleton<GameMaster>
 			yield return 0;			
 		}
 
-		// Atualizar server no heroku por node.js: @Heitor
-	}
+        // Atualizar server no heroku por node.js: @Heitor
+        WWW wwnode = new WWW(HEROKU_URL + "addWine?id=" + index.ToString());
+        while (!wwnode.isDone)
+        {
+            yield return 0;
+        }
+    }
 
 	public IEnumerator LoadWineQuantities()
 	{
@@ -307,9 +316,15 @@ public class GameMaster : Singleton<GameMaster>
 			}
 			wineQuantitiesFromWebhost.Add(int.Parse(www.text));
 
-			// Inserir chamada pro getWineQuantity do node por aqui @Heitor
-		}
-	}
+            // Inserir chamada pro getWineQuantity do node por aqui @Heitor
+            WWW wwnode = new WWW(HEROKU_URL + "getWineQuantity?id=" + i.ToString());
+            while (!wwnode.isDone)
+            {
+                yield return 0;
+            }
+			wineQuantitiesFromHeroku.Add(int.Parse(Regex.Match(wwnode.text, @"\d+").Value));
+        }
+    }
 
 	// Usado só pelo esquema com Spreadsheet
 	public void ParseData(CloudConnectorCore.QueryType query, List<string> objTypeNames, List<string> jsonData)
